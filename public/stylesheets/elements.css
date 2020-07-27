@@ -1,0 +1,364 @@
+a {
+	text-decoration: none;
+	cursor: pointer;
+	color: black;
+}
+
+select:required:invalid {
+	color: #666;
+}
+	.hide-disabled [value=""][disabled] {
+		display: none;
+	}
+
+.alert-msg {
+	background-color:#fff;
+	height: auto;
+	width:300px;
+	padding: 5px;
+	margin:auto;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border-radius:3px;
+	box-sizing: border-box;
+}
+
+.title-soft {
+	font-size: 16px;
+	font-family: "Lucida Sans", Gadget, sans-serif;
+}
+
+.underline {
+	margin: auto;
+	border-bottom: 1px solid #f0f0f0;
+	width: 90%;
+	padding-bottom: 5px;
+	margin-bottom: 10px;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.impact {
+	font-family: Impact, Charcoal, sans-serif;
+}
+
+.btn-table {
+     background:none;
+     color:inherit;
+     border:none; 
+     padding:5px;
+     font: inherit;
+     /*border is optional*/
+     border:1px solid #f0f0f0;
+     cursor: pointer;
+}
+
+.btn-generic-small {
+	font-size: 12px;
+	width:75px;
+	height: 30px;
+	margin: 3px;
+	font-family: "HelveticaNeue-Light";
+	text-align: center;
+	background-color: #fff;
+	border-radius: 5px;
+	border: 1px solid #8f9f94;
+}
+
+.btn-generic-medium {
+	font-size: 12px;
+	width:150px;
+	height: 30px;
+	margin: 3px;
+	font-family: "HelveticaNeue-Light";
+	text-align: center;
+	background-color: #fff;
+	border-radius: 5px;
+	border: 1px solid #8f9f94;
+}
+
+.btn-generic-big {
+	font-size: 12px;
+	width:200px;
+	height: 30px;
+	margin: 3px;
+	font-family: "HelveticaNeue-Light";
+	text-align: center;
+	background-color: #fff;
+	border-radius: 5px;
+	border: 1px solid #8f9f94;
+}
+
+.input-search {
+	font-size: 12px;
+	width: 30%;
+	height: 30px;
+	margin: 3px;
+	font-family: "HelveticaNeue-Light";
+	text-align: center;
+	background-color: #fff;
+	border-radius: 2px;
+	border: 1px solid #8f9f94;
+}
+
+.select-search-color {
+	font-size: 12px;
+	width: 25%;
+	height: 30px;
+	margin: 3px;
+	font-family: "HelveticaNeue-Light";
+	text-align-last: center;
+	background-color: #fff;
+	border-radius: 2px;
+	border: 1px solid #8f9f94;
+}
+
+.btn-search-submit {
+	background-color: #e1e1e1;
+	color: #000;
+	font-size: 12px;
+	width:25%;
+	height: 30px;
+	margin: 3px;
+	font-weight: bold;
+	font-family: "HelveticaNeue-Light";
+	text-align: center;
+	border-radius: 5px;
+	border: 2px outset #f0f0f0;
+	transition: background-color 0.5s ease-in-out;
+}
+
+.btn-search-submit:hover {
+	width: 25%; 
+	background-color: #000;
+	color: #f0f0f0;
+	animation-name: btnSubmitEffect;
+  	animation-duration: 0.3s;
+}
+
+.btn-submit {
+	background-color: #f0f0f0;
+	color: #333;
+	font-size: 12px;
+	width:130px;
+	height: 30px;
+	margin: 3px;
+	font-weight: bold;
+	font-family: "HelveticaNeue-Light";
+	text-align: center;
+	border-radius: 5px;
+	border: 2px outset #f0f0f0;
+	/*transition: background-color 0.5s ease-in-out;*/
+}
+
+.btn-submit:hover {
+	background-color: #c1c1c1;
+	color: #111;
+	cursor: pointer;
+  	animation-duration: 0.3s;
+
+}
+
+.btn-generic-date-day {
+	font-size: 12px;
+	width: 50px;
+	height: 30px;
+	margin: 3px;
+	margin-bottom: 10px;
+}
+
+.btn-generic-date-month {
+	font-size: 12px;
+	width: 90px;
+	height: 30px;
+	margin: 3px;
+	margin-bottom: 10px;
+}
+
+.btn-generic-date-year {
+	font-size: 12px;
+	width: 70px;
+	height: 30px;
+	margin: 3px;
+	margin-bottom: 10px;
+}
+
+.btn-generic-menu-small {
+	font-size: 12px;
+	width:100px;
+	height: 30px;
+	margin: auto;
+	margin-bottom: 10px;
+}
+
+.btn-generic-menu-medium {
+	font-size: 12px;
+	width:150px;
+	height: 30px;
+	margin: auto;
+	margin-bottom: 10px;
+}
+
+.btn-generic-menu-big {
+	font-size: 12px;
+	width:200px;
+	height: 30px;
+	margin: auto;
+	margin-bottom: 10px;
+}
+
+.price {
+	color: rgba(0, 0, 0, 1);
+	font-family: Garamond,serif; 
+	font-weight: bold;
+	font-size: 15px;
+}
+
+/*catalog*/
+.catalog {
+	background-image: linear-gradient(to right, #dcdcdc, #c8c8c8, #aaaaaa);
+	color: rgba(0, 0, 0, 0.7);
+	font-family: Garamond,serif; 
+	/*font-family: FreeMono, monospace;*/
+	font-size: 16px;
+	font-weight: bold;
+	font: 50%;
+}
+
+.catalog-image-div {
+	box-sizing: border-box;
+	max-width:100%;
+	max-height:180px;
+	width: auto;
+	height:180px;
+}
+
+.catalog-image-div:hover {
+	box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.2), 2px 2px 10px 2px rgba(0, 0, 0, 0.19);
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.catalog-image {
+	box-sizing: border-box;
+	max-width:100%;
+	max-height:400px;
+	width: auto;
+	height: auto;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+
+.tbl-show-link {
+	background-color: #f0f0f0;
+	width: 100%;
+	height: 100%;
+	border-radius: 2px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	/*border: 1px solid #c8c8c8;*/
+	border: 1px solid #8f9f94;
+}
+
+.btn-pagination {
+	box-shadow:inset 0px 1px 3px 0px #91b8b3;
+	background:linear-gradient(to bottom, #c9c9c9 5%, #f0f0f0 100%);
+	background-color:#768d87;
+	border-radius:5px;
+	border:1px solid #566963;
+	display:inline-block;
+	cursor:pointer;
+	color:#000;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	width: 25%;
+	padding:2px;
+	text-decoration:none;
+	text-shadow:0px -1px 0px #2b665e;
+}
+
+.btn-pagination:hover {
+	background:linear-gradient(to bottom, #c3c3c3 5%, #c0c0c0 100%);
+	background-color:#6c7c7c;
+}
+
+.tbl-show-link:hover {
+	background-color: #cfcfcf;
+}
+
+.span-menu {
+	border-radius: 3px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin: 5px;
+	cursor: pointer;
+	background-color: #f0f0f0;
+	border: 1px solid #f0f0f0;
+}
+
+.span-menu:hover {
+	background-color: #f9f9f9;
+	border-radius: 3px;
+	border: 1px solid #f0f0f0;
+}
+
+.tbl-generic {
+	border: 1px solid #f0f0f0;
+	font-size: 12px;
+}
+
+.tbl-generic tr td {
+	border: 1px solid #f0f0f0;
+	padding: 5px;
+}
+
+.tbl-info {
+	border: 1px solid #f0f0f0;
+	font-size: 12px;
+}
+
+.tbl-info tr td {
+	border: 1px solid #f0f0f0;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.tbl-amount-cell {
+	width:25px;
+}
+
+.cashier-sale-info {
+	padding-right: 30px;
+}
+
+	.cashier-sale-info tr td {
+		padding: 5px;
+	}
+
+	.discount {
+		font-size: 15px;
+	}
+
+	.totalValue {
+		font-size: 15px;
+	}
+
+	.finalValue {
+		font-size: 30px;
+		font-weight: bold;
+		color: #390;
+	}
+
+.link-btn {
+	font-weight: bold;
+	font-size: 20px;
+}
