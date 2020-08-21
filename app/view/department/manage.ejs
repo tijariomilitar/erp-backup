@@ -8,31 +8,65 @@
 		<section>
 			<div class="container">
 				<div class="box-2">
-					<h3>Cadastrar Departamento</h3>
-					<form id="department-create-form" class="box-1">
-						<input type="text" name="name" class="btn-generic-big" placeholder="Nome do departamento" autocomplete="off">
-						<input type="text" name="abbreviation" class="btn-generic-big" placeholder="Abreviação em 3 Letras" autocomplete="off">
-						<button type="submit" class="btn-submit">Cadastrar</button>
+					<form id="department-create-form" class="box-1" name="departmentcreateform">
+						<h3>Cadastrar Departamento</h3>
+						<input type="hidden" name="id" value="">
+						<input type="text" name="name" class="btn-generic-big" placeholder="Nome do departamento" maxlength="40" autocomplete="off">
+						<input type="text" name="abbreviation" class="btn-generic-big" placeholder="Abreviação em 2 ou 3 letras" maxlength="3" autocomplete="off">
+						<button type="submit" name="submit" class="btn-submit">Cadastrar</button>
 					</form>
 				</div>
 				<div class="box-2">
-					<h3>Cadastrar Função</h3>
-					<form id="user-list-form" class="box-1">
-						<select class="hide-disabled btn-generic-big">
+					<form id="department-role-create-form" class="box-1">
+						<h3>Cadastrar Cargo</h3>
+						<input type="hidden" name="id" value="">
+						<select name="department_id" class="hide-disabled btn-generic-big">
 							<option value="" disabled selected>Departamento</option>
-							<% for(i in user_departments) { %>
-								<option value="<%= user_departments[i].abbreviation %>"><%= user_departments[i].name %></option>
+							<!-- for i in department -->
+							<% for(i in departments){ %>
+								<option value="<%= departments[i].id %>"><%= departments[i].name %></option>
 							<% } %>
 						</select>
-						<input type="text" name="user-role-abbreviation" class="btn-generic-big" placeholder="Abreviação em 3 Letras" autocomplete="off">
-						<button type="submit" class="btn-submit">Cadastrar</button>
+						<input type="text" name="name" class="btn-generic-big" placeholder="Nome do cargo" maxlength="40" autocomplete="off">
+						<input type="text" name="abbreviation" class="btn-generic-big" placeholder="Abreviação em 2 ou 3 letras" maxlength="3" autocomplete="off">
+						<button type="submit" name="submit" class="btn-submit">Cadastrar</button>
 					</form>
 				</div>
+				<div class="box-2">
+					<form id="department-list-form">
+						<button type="submit" name="submit" class="btn-generic-full">Departamentos</button>
+					</form>
+					<div id="department-list-box" class="box-1" style="display:none">
+						<table id="department-list-table" class="tbl-info width-fill"></table>
+						<br>
+						<div name="carousel-navigation">
+							<button name="carousel-previous" autocomplete="off" disabled>&lsaquo;&lsaquo;</button>
+		                    <span name="carousel-page"></span>
+		                    <button name="carousel-next" autocomplete="off" disabled>&rsaquo;&rsaquo;</button>
+						</div>
+					</div>
+				</div>
+				<div id="department-show-box" class="box-2" style="display:none">
+					<div id="department-info-box"></div>
+
+					<div id="department-role-list-box">
+						<table id="department-role-list-table" class="tbl-info width-fill"></table>
+						<br>
+						<div name="carousel-navigation">
+							<button name="carousel-previous" autocomplete="off" disabled>&lsaquo;&lsaquo;</button>
+		                    <span name="carousel-page"></span>
+		                    <button name="carousel-next" autocomplete="off" disabled>&rsaquo;&rsaquo;</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="ajax-loader" class="ajax-loader">
+				<div class="loader"></div>
 			</div>
 		</section>
 	</body>
 	<footer>
         <% include ./../partials/footer %>
-		<script src="/javascripts/scripts/user/main.js"></script>
+        <% include ./partial %>
 	</footer>
 </html>

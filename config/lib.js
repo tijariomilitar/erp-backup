@@ -1,4 +1,4 @@
-var lib = {
+module.exports = {
 	convertDate:function(date){
 		var str = date.split('-');
 		if(str!=""){
@@ -172,9 +172,10 @@ var lib = {
 		};
 		return query;
 	},
+	findBy: async (data, database, table, param, value) => {
+		let query = "SELECT * FROM "+ database +"."+ table +" WHERE "+ param +"='"+ value +"';";
+	},
 	roundValue: function(value){
 		return Math.round((value) * 100) / 100;
 	}
 };
-
-module.exports = lib;

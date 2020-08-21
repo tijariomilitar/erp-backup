@@ -19,7 +19,7 @@ $(() => {
 		document.getElementById('ajax-loader').style.visibility = 'visible';
 		
 		$.ajax({
-			url: "/feedstock/supplier/create",
+			url: "/feedstock/supplier/save",
 			method: "post",
 			data: $("#feedstock-supplier-create-form").serialize(),
 			success: (response) => {

@@ -64,130 +64,132 @@ Feedstock.remove = async (id) => {
 	return db(query);
 };
 
-Feedstock.supplierCreate = async (supplier) => {
-	let query = "INSERT INTO cms_wt_erp.feedstock_supplier (name, phone) VALUES ('"
-		+supplier.name+"','"
-		+supplier.phone+"');";
-	return db(query);
+Feedstock.supplier = {
+	save: async (supplier) => {
+		let query = "INSERT INTO cms_wt_erp.feedstock_supplier (name, phone) VALUES ('"
+			+supplier.name+"','"
+			+supplier.phone+"');";
+		return db(query);
+	},
+	findById: async (id) => {
+		let query = "SELECT * FROM cms_wt_erp.feedstock_supplier WHERE id='"+id+"';";
+		return db(query);
+	},
+	findByName: async (name) => {
+		let query = "SELECT * FROM cms_wt_erp.feedstock_supplier WHERE name like '%"+name+"%' ORDER BY id ASC;";
+		return db(query);
+	},
+	list: async () => {
+		let query = "SELECT * FROM cms_wt_erp.feedstock_supplier ORDER BY id ASC;";
+		return db(query);
+	},
+	feedstock: {
+		add: async (insertion) => {
+			let query = "INSERT INTO cms_wt_erp.feedstock_supplier_storage (supplier_id, feedstock_id, value) VALUES ('"
+				+insertion.supplier_id+"', '"
+				+insertion.feedstock_id+"', '"
+				+insertion.value+"');";
+			return db(query);
+		},
+		update: async (insertion) => {
+			let query = "UPDATE cms_wt_erp.feedstock_supplier_storage SET value='"+insertion.value+"' WHERE id='"+insertion.id+"';";
+			return db(query);
+		},
+		remove: async (id) => {
+			let query = "DELETE FROM cms_wt_erp.feedstock_supplier_storage WHERE id='"+id+"';";
+			return db(query);
+		},
+		storage: {
+			list: async (id) => {
+				let query = "SELECT * FROM cms_wt_erp.feedstock_supplier_storage WHERE supplier_id='"+id+"';";
+				return db(query);
+			},
+			removeByFeedstockId: async (id) => {
+				let query = "DELETE FROM cms_wt_erp.feedstock_supplier_storage WHERE feedstock_id='"+id+"';";
+				return db(query);
+			},
+		}
+	}
 };
 
-Feedstock.supplierFindById = async (id) => {
-	let query = "SELECT * FROM cms_wt_erp.feedstock_supplier WHERE id='"+id+"';";
-	return db(query);
+Feedstock.storage = {
+	removeByFeedstockId: async (id) => {
+		let query = "DELETE FROM cms_wt_erp.feedstock_storage WHERE feedstock_id='"+id+"';";
+		return db(query);
+	}
 };
 
-Feedstock.supplierFindByName = async (name) => {
-	let query = "SELECT * FROM cms_wt_erp.feedstock_supplier WHERE name like '%"+name+"%' ORDER BY id ASC;";
-	return db(query);
+Feedstock.request = {
+	save: async (request) => {
+		let query = "INSERT INTO cms_wt_erp.feedstock_request (date, full_date, storage_id, user, obs) VALUES ('"
+			+request.date+"', '"
+			+request.full_date+"', '"
+			+request.storage_id+"', '"
+			+request.user+"', '"
+			+request.obs+"');";
+		return db(query);
+	},
+	feedstock: {
+		add: async (option) => {
+			let query = "INSERT INTO cms_wt_erp.feedstock_request_feedstock (request_id, feedstock_id, feedstock_info, feedstock_uom, amount) VALUES ('"
+				+option.request_id+"', '"
+				+option.feedstock_id+"', '"
+				+option.feedstock_info+"', '"
+				+option.feedstock_uom+"', '"
+				+option.amount+"');";
+			return db(query);
+		},
+		filter: async (periodStart, periodEnd, params, values) => {
+			let query = lib.filterByPeriod(periodStart, periodEnd, params, values, "cms_wt_erp", "feedstock_request", "id", "DESC");
+			return db(query);
+		},
+		findById: async (id) => {
+			let query = "SELECT * FROM cms_wt_erp.feedstock_request WHERE id='"+id+"';";
+			return db(query);
+		},
+		confirm: async (option) => {
+			let query = "UPDATE cms_wt_erp.feedstock_request SET status='Pedido confirmado', confirmation_user='"+option.user+"' WHERE id='"+option.request_id+"';";
+			return db(query);
+		},
+		feedstock: {
+			list: async (id) => {
+				let query = "SELECT * FROM cms_wt_erp.feedstock_request_feedstock WHERE request_id='"+id+"';";
+				return db(query);
+			},
+		}
+	}
 };
 
-Feedstock.supplierList = async () => {
-	let query = "SELECT * FROM cms_wt_erp.feedstock_supplier ORDER BY id ASC;";
-	return db(query);
-};
-
-Feedstock.supplierAddFeedstock = async (insertion) => {
-	let query = "INSERT INTO cms_wt_erp.feedstock_supplier_storage (supplier_id, feedstock_id, value) VALUES ('"
-		+insertion.supplier_id+"', '"
-		+insertion.feedstock_id+"', '"
-		+insertion.value+"');";
-	return db(query);
-};
-
-Feedstock.supplierUpdateFeedstock = async (insertion) => {
-	let query = "UPDATE cms_wt_erp.feedstock_supplier_storage SET value='"+insertion.value+"' WHERE id='"+insertion.id+"';";
-	return db(query);
-};
-
-Feedstock.supplierRemoveFeedstock = async (id) => {
-	let query = "DELETE FROM cms_wt_erp.feedstock_supplier_storage WHERE id='"+id+"';";
-	return db(query);
-};
-
-Feedstock.supplierStorageList = async (id) => {
-	let query = "SELECT * FROM cms_wt_erp.feedstock_supplier_storage WHERE supplier_id='"+id+"';";
-	return db(query);
-};
-
-Feedstock.supplierFeedstockClear = async (id) => {
-	let query = "DELETE FROM cms_wt_erp.feedstock_supplier_storage WHERE feedstock_id='"+id+"';";
-	return db(query);
-};
-
-Feedstock.storageFeedstockClear = async (id) => {
-	let query = "DELETE FROM cms_wt_erp.feedstock_storage WHERE feedstock_id='"+id+"';";
-	return db(query);
-};
-
-Feedstock.requestSave = async (request) => {
-	let query = "INSERT INTO cms_wt_erp.feedstock_request (date, full_date, storage_id, user, obs) VALUES ('"
-		+request.date+"', '"
-		+request.full_date+"', '"
-		+request.storage_id+"', '"
-		+request.user+"', '"
-		+request.obs+"');";
-	return db(query);
-};
-
-Feedstock.requestSaveFeedstock = async (option) => {
-	let query = "INSERT INTO cms_wt_erp.feedstock_request_feedstock (request_id, feedstock_id, feedstock_info, feedstock_uom, amount) VALUES ('"
-		+option.request_id+"', '"
-		+option.feedstock_id+"', '"
-		+option.feedstock_info+"', '"
-		+option.feedstock_uom+"', '"
-		+option.amount+"');";
-	return db(query);
-};
-
-Feedstock.requestFilter = async (periodStart, periodEnd, params, values) => {
-	let query = lib.filterByPeriod(periodStart, periodEnd, params, values, "cms_wt_erp", "feedstock_request", "id", "DESC");
-	return db(query);
-};
-
-Feedstock.requestFindById = async (id) => {
-	let query = "SELECT * FROM cms_wt_erp.feedstock_request WHERE id='"+id+"';";
-	return db(query);
-};
-
-Feedstock.requestListProducts = async (id) => {
-	let query = "SELECT * FROM cms_wt_erp.feedstock_request_feedstock WHERE request_id='"+id+"';";
-	return db(query);
-};
-
-Feedstock.requestConfirm = async (option) => {
-	let query = "UPDATE cms_wt_erp.feedstock_request SET status='Pedido confirmado', confirmation_user='"+option.user+"' WHERE id='"+option.request_id+"';";
-	return db(query);
-};
-
-Feedstock.regressSave = async (regress) => {
-	let query = "INSERT INTO cms_wt_erp.feedstock_regress (date, full_date, storage_id, user, obs) VALUES ('"
-		+regress.date+"', '"
-		+regress.full_date+"', '"
-		+regress.storage_id+"', '"
-		+regress.user+"', '"
-		+regress.obs+"');";
-	return db(query);
-};
-
-Feedstock.regressSaveFeedstock = async (option) => {
-	let query = "INSERT INTO cms_wt_erp.feedstock_regress_feedstock (regress_id, feedstock_id, feedstock_info, feedstock_uom, amount) VALUES ('"
-		+option.regress_id+"', '"
-		+option.feedstock_id+"', '"
-		+option.feedstock_info+"', '"
-		+option.feedstock_uom+"', '"
-		+option.amount+"');";
-	return db(query);
-};
-
-Feedstock.regressFilter = async (periodStart, periodEnd, params, values) => {
-	let query = lib.filterByPeriod(periodStart, periodEnd, params, values, "cms_wt_erp", "feedstock_regress", "id", "DESC");
-	return db(query);
-};
-
-Feedstock.regressFindById = async (id) => {
-	let query = "SELECT * FROM cms_wt_erp.feedstock_regress WHERE id='"+id+"';";
-	return db(query);
-};
+Feedstock.regress = {
+	save: async (regress) => {
+		let query = "INSERT INTO cms_wt_erp.feedstock_regress (date, full_date, storage_id, user, obs) VALUES ('"
+			+regress.date+"', '"
+			+regress.full_date+"', '"
+			+regress.storage_id+"', '"
+			+regress.user+"', '"
+			+regress.obs+"');";
+		return db(query);
+	},
+	findById: async (id) => {
+		let query = "SELECT * FROM cms_wt_erp.feedstock_regress WHERE id='"+id+"';";
+		return db(query);
+	},
+	filter: async (periodStart, periodEnd, params, values) => {
+		let query = lib.filterByPeriod(periodStart, periodEnd, params, values, "cms_wt_erp", "feedstock_regress", "id", "DESC");
+		return db(query);
+	},
+	feedstock: {
+		add: async (option) => {
+			let query = "INSERT INTO cms_wt_erp.feedstock_regress_feedstock (regress_id, feedstock_id, feedstock_info, feedstock_uom, amount) VALUES ('"
+				+option.regress_id+"', '"
+				+option.feedstock_id+"', '"
+				+option.feedstock_info+"', '"
+				+option.feedstock_uom+"', '"
+				+option.amount+"');";
+			return db(query);
+		}
+	}
+}
 
 Feedstock.regressListProducts = async (id) => {
 	let query = "SELECT * FROM cms_wt_erp.feedstock_regress_feedstock WHERE regress_id='"+id+"';";

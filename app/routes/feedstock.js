@@ -11,37 +11,37 @@ router.get('/filter', feedstockController.filter);
 router.delete('/remove', feedstockController.remove);
 
 router.get('/request', feedstockController.request);
-router.post('/request/save', feedstockController.requestSave);
-router.post('/request/filter', feedstockController.requestFilter);
-router.get('/request/id/:id', feedstockController.requestFindById);
-router.put('/request/confirm', feedstockController.requestConfirm);
+router.post('/request/save', feedstockController.request.save);
+router.post('/request/filter', feedstockController.request.filter);
+router.get('/request/id/:id', feedstockController.request.findById);
+router.put('/request/confirm', feedstockController.request.confirm);
 
 router.get('/regress', feedstockController.regress);
-router.post('/regress/save', feedstockController.regressSave);
-router.post('/regress/filter', feedstockController.regressFilter);
-router.get('/regress/id/:id', feedstockController.regressFindById);
-router.put('/regress/confirm', feedstockController.regressConfirm);
+router.post('/regress/save', feedstockController.regress.save);
+router.post('/regress/filter', feedstockController.regress.filter);
+router.get('/regress/id/:id', feedstockController.regress.findById);
+router.put('/regress/confirm', feedstockController.regress.confirm);
 
 router.get('/supplier', feedstockController.supplier);
-router.post('/supplier/create', feedstockController.supplierCreate);
-router.get('/supplier/filter', feedstockController.supplierFilter);
-router.get('/supplier/id/:id', feedstockController.supplierFindById);
-router.post('/supplier/storage/add', feedstockController.supplierAddFeedstock);
-router.get('/supplier/storage/remove/id/:id', feedstockController.supplierRemoveFeedstock);
-router.get('/supplier/storage/list/id/:id', feedstockController.supplierStorageList);
+router.post('/supplier/create', feedstockController.supplier.save);
+router.get('/supplier/filter', feedstockController.supplier.filter);
+router.get('/supplier/id/:id', feedstockController.supplier.findById);
+router.post('/supplier/storage/add', feedstockController.supplier.feedstock.add);
+router.get('/supplier/storage/list/id/:id', feedstockController.supplier.storage.list);
+router.get('/supplier/storage/remove/id/:id', feedstockController.supplier.feedstock.remove);
 
-router.get('/purchase', feedstockController.purchase);
-router.get('/purchase/manage', feedstockController.purchaseManage);
-router.post('/purchase/save', feedstockController.purchaseSave);
-router.put('/purchase/confirm', feedstockController.purchaseConfirm);
-router.get('/purchase/id/:id', feedstockController.purchaseFindById);
-router.post('/purchase/filter', feedstockController.purchaseFilter);
+router.get('/purchase', feedstockController.purchase.index);
+router.get('/purchase/manage', feedstockController.purchase.manage);
+router.post('/purchase/save', feedstockController.purchase.save);
+router.put('/purchase/confirm', feedstockController.purchase.confirm);
+router.get('/purchase/id/:id', feedstockController.purchase.findById);
+router.post('/purchase/filter', feedstockController.purchase.filter);
 
 router.get('/storage', feedstockController.storage);
-router.get('/storage/manage', feedstockController.storageManage);
-router.put('/storage/manage/amount/set', feedstockController.setStorageAmount);
-router.post('/storage/create', feedstockController.storageCreate);
-// router.get('/storage/list', feedstockController.storageList);
-router.get('/storage/filter', feedstockController.storageFilter);
+router.get('/storage/manage', feedstockController.storage.manage);
+router.put('/storage/manage/amount/set', feedstockController.storage.setAmount);
+router.post('/storage/create', feedstockController.storage.create);
+// router.get('/storage/list', feedstockController.storage.list);
+router.get('/storage/filter', feedstockController.storage.filter);
 
 module.exports = router;
