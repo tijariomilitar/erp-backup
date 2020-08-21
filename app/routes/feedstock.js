@@ -10,19 +10,19 @@ router.get('/id/:id', feedstockController.findById);
 router.get('/filter', feedstockController.filter);
 router.delete('/remove', feedstockController.remove);
 
-router.get('/request', feedstockController.request);
+router.get('/request', feedstockController.request.index);
 router.post('/request/save', feedstockController.request.save);
 router.post('/request/filter', feedstockController.request.filter);
 router.get('/request/id/:id', feedstockController.request.findById);
 router.put('/request/confirm', feedstockController.request.confirm);
 
-router.get('/regress', feedstockController.regress);
+router.get('/regress', feedstockController.regress.index);
 router.post('/regress/save', feedstockController.regress.save);
 router.post('/regress/filter', feedstockController.regress.filter);
 router.get('/regress/id/:id', feedstockController.regress.findById);
 router.put('/regress/confirm', feedstockController.regress.confirm);
 
-router.get('/supplier', feedstockController.supplier);
+router.get('/supplier', feedstockController.supplier.index);
 router.post('/supplier/create', feedstockController.supplier.save);
 router.get('/supplier/filter', feedstockController.supplier.filter);
 router.get('/supplier/id/:id', feedstockController.supplier.findById);

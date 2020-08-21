@@ -170,7 +170,7 @@ const feedstockController = {
 							return res.send({ msg: "Não há estoque de "+feedstock[0].name+" "+feedstock[0].color+" suficiente para realizar o pedido.\n Quantidade em estoque: "+storage_feedstock[0].amount / feedstock[0].standard });
 						} else if(request.feedstocks[i].uom == 'un'){
 							return res.send({ msg: "Não há estoque de "+feedstock[0].name+" "+feedstock[0].color+" suficiente para realizar o pedido.\n Quantidade em estoque: "+storage_feedstock[0].amount });
-						};	
+						};
 					};
 				};
 
@@ -237,7 +237,7 @@ const feedstockController = {
 				res.send({ msg: "Erro ao encontrar a compra" });
 			};
 		},
-		Confirm: async (req, res) => {
+		confirm: async (req, res) => {
 			if(!await userController.verifyAccess(req, res, ['adm','man','cut','COR-GER'])){
 				return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
 			};
