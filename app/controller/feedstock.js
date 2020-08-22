@@ -352,7 +352,7 @@ const feedstockController = {
 
 			try {
 				const regress = await Feedstock.regress.findBy.Id(req.params.id);
-				const regress_feedstocks = await Feedstock.regressListProducts(req.params.id);
+				const regress_feedstocks = await Feedstock.regress.feedstock.list(req.params.id);
 				const feedstocks = [];
 				for(i in regress_feedstocks){
 					let feedstock = await Feedstock.findById(regress_feedstocks[i].feedstock_id);
@@ -376,8 +376,8 @@ const feedstockController = {
 			};
 
 			try {
-				await Feedstock.regressConfirm(option);
-				const regress_feedstocks = await Feedstock.regressListProducts(option.regress_id);
+				await Feedstock.regress.confirm(option);
+				const regress_feedstocks = await Feedstock.regress.feedstock.List(option.regress_id);
 				for(i in regress_feedstocks){
 					var option = {
 						feedstock_id: regress_feedstocks[i].feedstock_id,
@@ -391,7 +391,7 @@ const feedstockController = {
 				console.log(err);
 				res.send({ msg: "Erro ao confirmar o pedido, favor contatar o suporte," });
 			};
-		},
+		}
 	},
 	supplier: {
 		index: async (req, res) => {
@@ -527,6 +527,27 @@ const feedstockController = {
 					res.send({ msg: 'Erro ao remover matéria-prima' });
 				};
 			}
+		},
+		storage: {
+			list: async(req, res) => {
+				if(!await userController.verifyAccess(req, res, ['adm','man'])){
+					return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+				};
+
+				try {
+					var feedstocks = [];
+					const supplier_storage = await Feedstock.supplierStorageList(req.params.id);
+					for(i in supplier_storage){
+						var feedstock = await Feedstock.findById(supplier_storage[i].feedstock_id);
+						feedstocks.push(feedstock[0]);
+					};
+
+					res.send({ supplier_storage, feedstocks });
+				} catch (err) {
+					console.log(err);
+					res.send({ msg: 'Erro ao listar os produtos!' });
+				};
+			}
 		}
 	},
 	purchase: {
@@ -567,7 +588,7 @@ const feedstockController = {
 			};
 
 			try {
-				const purchase_row = await Feedstock.purchaseSave(purchase);
+				const purchase_row = await Feedstock.purchase.save(purchase);
 				for(i in feedstocks){
 					var option = {
 						purchase_id: purchase_row.insertId,
@@ -578,7 +599,7 @@ const feedstockController = {
 						feedstock_value: feedstocks[i].value
 					};
 
-					await Feedstock.purchaseSaveFeedstock(option);
+					await Feedstock.purchase.feedstock.save(option);
 				};
 				res.send({ done: "Compra de código: "+purchase_row.insertId+" cadastrada com sucesso.\n Confirme após conferência para efetivar entrada no estoque." });
 			} catch (err) {
@@ -592,7 +613,7 @@ const feedstockController = {
 			};
 
 			try {
-				const purchase = await Feedstock.purchaseFindById(req.params.id);
+				const purchase = await Feedstock.purchase.findById(req.params.id);
 				const purchase_feedstocks = await Feedstock.purchaseListProducts(req.params.id);
 				const feedstocks = [];
 				for(i in purchase_feedstocks){
@@ -632,7 +653,7 @@ const feedstockController = {
 				values.push(req.body.feedstock_purchase_status);
 			};
 
-			const purchases = await Feedstock.purchaseFilter(periodStart, periodEnd, params, values);
+			const purchases = await Feedstock.purchase.filter(periodStart, periodEnd, params, values);
 
 			res.send({ purchases });
 		},
@@ -648,7 +669,7 @@ const feedstockController = {
 			};
 
 			try {
-				await Feedstock.purchaseConfirm(option);
+				await Feedstock.purchase.confirm(option);
 				const purchase_feedstocks = await Feedstock.purchaseListProducts(option.purchase_id);
 				for(i in purchase_feedstocks){
 					var option = {
@@ -720,7 +741,7 @@ const feedstockController = {
 			if(req.body.name.length < 3 || req.body.name.length > 30){return res.send({ msg: 'Nome de Estoque inválido!' })};
 
 			try {
-				var result = await Feedstock.storageCreate(req.body.name);	
+				var result = await Feedstock.storage.save(req.body.name);	
 			} catch (err){
 				console.log(err);
 				return res.send({ msg: 'Ocorreu um erro ao criar este banco de dados favor entrar em contato com o suporte.' });

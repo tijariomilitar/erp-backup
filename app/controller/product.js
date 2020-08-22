@@ -280,68 +280,6 @@ const productController = {
 			};
 		}
 	},
-	categorySave: async (req, res) => {
-		if(!await userController.verifyAccess(req, res, ['adm'])){
-			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
-		};
-
-		const category = {
-			name: req.body.product_category_name,
-			shortcut: req.body.product_category_shortcut
-		};
-
-		try {
-			await Product.categorySave(category);
-			res.send({ done: 'Categoria cadastrada com sucesso!' });
-		} catch (err) {
-			console.log(err);
-			res.send({ msg: "Ocorreu um erro ao cadastrar a categoria." });
-		};
-	},
-	categoryList: async (req, res) => {
-		if(!await userController.verifyAccess(req, res, ['adm','n/a'])){
-			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
-		};
-
-		try {
-			const categories = await Product.categoryList();
-			res.send({ categories });
-		} catch (err) {
-			console.log(err);
-			res.send({ msg: "Ocorreu um erro ao listar categorias." });
-		};
-	},
-	colorSave: async (req, res) => {
-		if(!await userController.verifyAccess(req, res, ['adm'])){
-			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
-		};
-
-		const color = {
-			name: req.body.color_name,
-			shortcut: req.body.color_shortcut			
-		};
-
-		try {
-			await Product.colorSave(color);
-			res.send({ done: 'Cor cadastrada com sucesso!' });
-		} catch (err) {
-			console.log(err);
-			res.send({ msg: "Ocorreu um erro ao salvar a cor, favor contatar o suporte." });
-		};
-	},
-	colorList: async (req, res) => {
-		if(!await userController.verifyAccess(req, res, ['adm','man','n/a'])){
-			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
-		};
-	
-		try {
-			const colors = await Product.colorList();
-			res.send(colors);
-		} catch (err) {
-			console.log(err);
-			res.send({ msg: "Ocorreu um erro ao listar as cores, favor contatar o suporte." });
-		};
-	},
 	production: {
 		index: async (req, res) => {
 			if(!await userController.verifyAccess(req, res, ['adm','man','COR-GER'])){
@@ -584,6 +522,68 @@ const productController = {
 				res.send({ msg: "Erro ao encontrar a produção" });
 			};
 		},
+	},
+	categorySave: async (req, res) => {
+		if(!await userController.verifyAccess(req, res, ['adm'])){
+			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+		};
+
+		const category = {
+			name: req.body.product_category_name,
+			shortcut: req.body.product_category_shortcut
+		};
+
+		try {
+			await Product.categorySave(category);
+			res.send({ done: 'Categoria cadastrada com sucesso!' });
+		} catch (err) {
+			console.log(err);
+			res.send({ msg: "Ocorreu um erro ao cadastrar a categoria." });
+		};
+	},
+	categoryList: async (req, res) => {
+		if(!await userController.verifyAccess(req, res, ['adm','n/a'])){
+			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+		};
+
+		try {
+			const categories = await Product.categoryList();
+			res.send({ categories });
+		} catch (err) {
+			console.log(err);
+			res.send({ msg: "Ocorreu um erro ao listar categorias." });
+		};
+	},
+	colorSave: async (req, res) => {
+		if(!await userController.verifyAccess(req, res, ['adm'])){
+			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+		};
+
+		const color = {
+			name: req.body.color_name,
+			shortcut: req.body.color_shortcut			
+		};
+
+		try {
+			await Product.colorSave(color);
+			res.send({ done: 'Cor cadastrada com sucesso!' });
+		} catch (err) {
+			console.log(err);
+			res.send({ msg: "Ocorreu um erro ao salvar a cor, favor contatar o suporte." });
+		};
+	},
+	colorList: async (req, res) => {
+		if(!await userController.verifyAccess(req, res, ['adm','man','n/a'])){
+			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+		};
+	
+		try {
+			const colors = await Product.colorList();
+			res.send(colors);
+		} catch (err) {
+			console.log(err);
+			res.send({ msg: "Ocorreu um erro ao listar as cores, favor contatar o suporte." });
+		};
 	}
 };
 

@@ -37,7 +37,7 @@ router.put('/purchase/confirm', feedstockController.purchase.confirm);
 router.get('/purchase/id/:id', feedstockController.purchase.findById);
 router.post('/purchase/filter', feedstockController.purchase.filter);
 
-router.get('/storage', feedstockController.storage);
+router.get('/storage', feedstockController.storage.index);
 router.get('/storage/manage', feedstockController.storage.manage);
 router.put('/storage/manage/amount/set', feedstockController.storage.setAmount);
 router.post('/storage/create', feedstockController.storage.create);
