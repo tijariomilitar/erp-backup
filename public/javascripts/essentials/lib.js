@@ -54,6 +54,9 @@ const lib = {
 		};
 		return array;
 	},
+	roundToInt: (num, places) => {
+		return +(parseFloat(num).toFixed(places));
+	},
 	roundValue: function(value){
 		return Math.round((value) * 100) / 100;
 	},

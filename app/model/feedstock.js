@@ -64,6 +64,14 @@ Feedstock.remove = async (id) => {
 	return db(query);
 };
 
+Feedstock.storage = {
+	//Criar funções de inserção
+	removeByFeedstockId: async (id) => {
+		let query = "DELETE FROM cms_wt_erp.feedstock_storage WHERE feedstock_id='"+id+"';";
+		return db(query);
+	}
+};
+
 Feedstock.supplier = {
 	save: async (supplier) => {
 		let query = "INSERT INTO cms_wt_erp.feedstock_supplier (name, phone) VALUES ('"
@@ -107,15 +115,8 @@ Feedstock.supplier = {
 			removeByFeedstockId: async (id) => {
 				let query = "DELETE FROM cms_wt_erp.feedstock_supplier_storage WHERE feedstock_id='"+id+"';";
 				return db(query);
-			},
+			}
 		}
-	}
-};
-
-Feedstock.storage = {
-	removeByFeedstockId: async (id) => {
-		let query = "DELETE FROM cms_wt_erp.feedstock_storage WHERE feedstock_id='"+id+"';";
-		return db(query);
 	}
 };
 
@@ -155,7 +156,7 @@ Feedstock.request = {
 			list: async (id) => {
 				let query = "SELECT * FROM cms_wt_erp.feedstock_request_feedstock WHERE request_id='"+id+"';";
 				return db(query);
-			},
+			}
 		}
 	}
 };
@@ -196,7 +197,7 @@ Feedstock.regress = {
 			let query = "SELECT * FROM cms_wt_erp.feedstock_regress_feedstock WHERE regress_id='"+id+"';";
 			return db(query);
 		}
-	},
+	}
 };
 
 Feedstock.purchase = {
@@ -246,51 +247,41 @@ Feedstock.storage = {
 		let query = "INSERT INTO cms_wt_erp.feedstock_storage_instance (name) VALUES ('"+name+"');";
 		return db(query);
 	},
-	insert: async (insert) => {
-		let query = "INSERT INTO cms_wt_erp.feedstock_storage (storage_id, feedstock_id, amount) VALUES ('"
-			+insert.storage_id+"','"
-			+insert.feedstock_id+"','"
-			+insert.amount+"');";
+	list: async () => {
+		let query = "SELECT * FROM cms_wt_erp.feedstock_storage_instance ORDER BY id ASC;";
 		return db(query);
 	},
-};
-
-Feedstock.insertInStorage = async (insert) => {
-	let query = "INSERT INTO cms_wt_erp.feedstock_storage (storage_id, feedstock_id, amount) VALUES ('"
-		+insert.storage_id+"','"
-		+insert.feedstock_id+"','"
-		+insert.amount+"');";
-	return db(query);
-};
-
-Feedstock.setStorageAmount = async (feedstock) => {
-	let query = "UPDATE cms_wt_erp.feedstock_storage SET amount='"+feedstock.amount+"' WHERE id='"+feedstock.id+"';";
-	return db(query);
-};
-
-Feedstock.increaseStorageFeedstockAmount = async (option) => {
-	let query = "UPDATE cms_wt_erp.feedstock_storage SET amount=amount + '"+option.amount+"' WHERE storage_id='"+option.storage_id+"' AND feedstock_id='"+option.feedstock_id+"';";
-	return db(query);
-};
-
-Feedstock.decreaseStorageFeedstockAmount = async (option) => {
-	let query = "UPDATE cms_wt_erp.feedstock_storage SET amount=amount - '"+option.amount+"' WHERE storage_id='"+option.storage_id+"' AND feedstock_id='"+option.feedstock_id+"';";
-	return db(query);
-};
-
-Feedstock.storageList = async () => {
-	let query = "SELECT * FROM cms_wt_erp.feedstock_storage_instance ORDER BY id ASC;";
-	return db(query);
-};
-
-Feedstock.findInStorage = async (params, values) => {
-	let query = lib.filterQuery(params, values, "cms_wt_erp", "feedstock_storage", "feedstock_id", "ASC");
-	return db(query);
-};
-
-Feedstock.findInStorageById = async (id) => {
-	let query = "SELECT * FROM cms_wt_erp.feedstock_storage WHERE id = "+id+";";
-	return db(query);
+	feedstock: {
+		add: async (feedstock) => {
+			let query = "INSERT INTO cms_wt_erp.feedstock_storage (storage_id, feedstock_id, amount) VALUES ('"
+				+feedstock.storage_id+"','"
+				+feedstock.feedstock_id+"','"
+				+feedstock.amount+"');";
+			return db(query);
+		},
+		filter: async (params, values) => {
+			let query = lib.filterQuery(params, values, "cms_wt_erp", "feedstock_storage", "feedstock_id", "ASC");
+			return db(query);
+		},
+		findById: async (id) => {
+			let query = "SELECT * FROM cms_wt_erp.feedstock_storage WHERE id = "+id+";";
+			return db(query);
+		},
+		amount: {
+			set: async (feedstock) => {
+				let query = "UPDATE cms_wt_erp.feedstock_storage SET amount='"+feedstock.amount+"' WHERE id='"+feedstock.id+"';";
+				return db(query);
+			},
+			increase: async (option) => {
+				let query = "UPDATE cms_wt_erp.feedstock_storage SET amount=amount + '"+option.amount+"' WHERE storage_id='"+option.storage_id+"' AND feedstock_id='"+option.feedstock_id+"';";
+				return db(query);
+			},
+			decrease: async (option) => {
+				let query = "UPDATE cms_wt_erp.feedstock_storage SET amount=amount - '"+option.amount+"' WHERE storage_id='"+option.storage_id+"' AND feedstock_id='"+option.feedstock_id+"';";
+				return db(query);
+			}
+		}
+	}
 };
 
 module.exports = Feedstock;

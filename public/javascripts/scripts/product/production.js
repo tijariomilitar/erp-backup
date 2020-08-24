@@ -98,6 +98,8 @@ $(() => {
 				response.production.feedstocks.notEnough.sort((a, b) => {
 					return a.code - b.code;
 				});
+
+				console.log(response);
 				
 				var html = "";
 				html += "<tr>";
@@ -116,7 +118,7 @@ $(() => {
 					html += "<td class='nowrap'>"+response.production.feedstocks.enough[i].amount+""+response.production.feedstocks.enough[i].uom+"</td>";
 					html += "<td class='nowrap'>"+response.production.feedstocks.enough[i].standardAmount+"un</td>";
 					// html += "<td class='nowrap'>"+lib.roundValue(response.production.feedstocks.enough[i].amount/response.production.feedstocks.enough[i].standard)+"</td>";
-					html += "<td class='nowrap'>"+response.production.feedstocks.enough[i].amountInStorage+""+response.production.feedstocks.enough[i].uom+"</td>";
+					html += "<td class='nowrap'>"+lib.roundToInt(response.production.feedstocks.enough[i].amountInStorage/response.production.feedstocks.enough[i].standard)+""+response.production.feedstocks.enough[i].uom+"</td>";
 					html += "</tr>";
 				};
 				if(response.production.feedstocks.notEnough.length){
@@ -168,7 +170,7 @@ $(() => {
 		};
 
 		document.getElementById('ajax-loader').style.visibility = 'visible';
-		
+
 		$.ajax({
 			url: "/product/production/save",
 			method: "post",
@@ -177,21 +179,25 @@ $(() => {
 				products: JSON.stringify(product_production_kart)
 			},
 			success: (response) => {
-				if(API.verifyResponse(response, "product-production-form")){return};
+				// if(API.verifyResponse(response, "product-production-form")){return};
 
-				alert(response.done);
+				response.production.feedstocks.sort((a, b) => {
+					return a.code - b.code;
+				});
 
-				product_production_kart = [];
+				console.log(response)
 
-				document.getElementById("product-production-simulation-box").style.display = "block";
-				document.getElementById("product-production-simulation-tbl").innerHTML = "";
+				// product_production_kart = [];
 
-				updateProductProductionLocalStorage(product_production_kart);
-				renderProductProductionKart(product_production_kart);
+				// document.getElementById("product-production-simulation-box").style.display = "block";
+				// document.getElementById("product-production-simulation-tbl").innerHTML = "";
+
+				// updateProductProductionLocalStorage(product_production_kart);
+				// renderProductProductionKart(product_production_kart);
 			
-				document.getElementById('product-production-form').elements.namedItem("submit").disabled = false;
+				// document.getElementById('product-production-form').elements.namedItem("submit").disabled = false;
 				
-				document.getElementById("product-production-form").style.display = "none";
+				// document.getElementById("product-production-form").style.display = "none";
 				document.getElementById('ajax-loader').style.visibility = 'hidden';
 			}
 		});

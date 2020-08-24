@@ -3,10 +3,10 @@ const dbconfig = require('./database');
 
 const pool  = mysql.createPool({
 	connectionLimit : 20,
-	host : dbconfig.production.database.host,
-	port : dbconfig.production.database.port,
-	user : dbconfig.production.database.user,
-	password : dbconfig.production.database.password
+	host : dbconfig.producction.database.host,
+	port : dbconfig.producction.database.port,
+	user : dbconfig.producction.database.user,
+	password : dbconfig.producction.database.password
 });
 
 const db = async (query) => {

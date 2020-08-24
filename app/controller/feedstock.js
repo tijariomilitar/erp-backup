@@ -43,7 +43,7 @@ const feedstockController = {
 				const newFeedstock = await Feedstock.save(feedstock);
 					
 				//INSERT CREATED FEEDSTOCK IN STORAGES
-				const storages = await Feedstock.storageList();
+				const storages = await Feedstock.storage.list();
 
 				for(i in storages){
 					const insert = {
@@ -52,7 +52,7 @@ const feedstockController = {
 						amount: 0
 					};
 
-					await Feedstock.insertInStorage(insert);
+					await Feedstock.storage.feedstock.add(insert);
 				};
 				
 				res.send({ done: 'Matéria prima cadastrada com sucesso!' });
@@ -131,6 +131,182 @@ const feedstockController = {
 			res.send({ msg: err });
 		};
 	},
+	storage: {
+		index: async (req, res) => {
+			if(!await userController.verifyAccess(req, res, ['adm','man','sto','cut','COR-GER'])){
+				return res.redirect('/');
+			};
+
+			const feedstockColors = await Feedstock.colorList();
+			const feedstockStorages = await Feedstock.storage.list();
+			res.render('feedstock/storage', { user: req.user, feedstockColors, feedstockStorages });
+		},
+		manage: async (req, res) => {
+			if(!await userController.verifyAccess(req, res, ['adm','man','COR-GER'])){
+				return res.redirect('/');
+			};
+
+			const feedstockColors = await Feedstock.colorList();
+			const feedstockStorages = await Feedstock.storage.list();
+			res.render('feedstock/storage_manage', { feedstockColors: feedstockColors, feedstockStorages: feedstockStorages, user: req.user });
+		},
+		create: async (req, res) => {
+			if(!await userController.verifyAccess(req, res, ['adm','man'])){
+				return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+			};
+
+			if(req.body.name.length < 3 || req.body.name.length > 30){return res.send({ msg: 'Nome de Estoque inválido!' })};
+
+			try {
+				var result = await Feedstock.storage.save(req.body.name);	
+			} catch (err){
+				console.log(err);
+				return res.send({ msg: 'Ocorreu um erro ao criar este banco de dados favor entrar em contato com o suporte.' });
+			};
+
+			try {
+				const feedstocks = await Feedstock.list();
+
+				for(i in feedstocks){
+					var insert = {
+						storage_id: result.insertId,
+						feedstock_id: feedstocks[i].id,
+						amount: 0
+					};
+
+					await Feedstock.storage.feedstock.add(insert);
+				};
+				
+				res.send({ done: 'Estoque criado e matérias-primas inseridas com sucesso!' });
+			} catch (err){
+				console.log(err);
+				return res.send({ msg: 'Ocorreu um erro ao registrar uma matéria-prima ao estoque, favor contatar o suporte.' });
+			};
+		},
+		list: async (req, res) => {
+			if(!await userController.verifyAccess(req, res, ['adm','man','sto'])){
+				return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+			};
+
+			try {
+				const storages = await Feedstock.storage.list();
+				res.send(storages);
+			} catch (err) {
+				console.log(err);
+				res.send({ msg: "Ocorreu um erro ao listar os estoques." });
+			};
+		},
+		feedstock: {
+			filter: async (req, res) => {
+				if(!await userController.verifyAccess(req, res, ['adm','man','sto','COR-GER'])){
+					return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+				};
+
+				let params = [];
+				let values = [];
+
+				if(req.query.name){
+					Feedstock.findByName(req.query.name)
+						.then(async feedstocks => {
+							var storageFeedstocks = [];
+							for(i in feedstocks){
+								params = [];
+								values = [];
+
+								if(req.query.storage){
+									params.push('storage_id');
+									values.push(req.query.storage);
+								};
+
+								params.push('feedstock_id');
+								values.push(feedstocks[i].id);
+
+								var storageRows = await Feedstock.storage.feedstock.filter(params, values);
+
+								for(j in storageRows){
+									storageFeedstocks.push(storageRows[j]);
+								};
+							};
+							res.send({ feedstocks, storageFeedstocks });
+						})
+						.catch(err => {
+							console.log(err);
+							res.send({ msg: "Ocorreu um erro ao filtrar as matérias primas, favor contatar o suporte" });
+						});
+				} else {
+					if(parseInt(req.query.code)){
+						params.push("code");
+						values.push(req.query.code);
+					};
+
+					if(req.query.color){
+						params.push("color");
+						values.push(req.query.color);
+					};
+
+					Feedstock.filter(params, values)
+						.then(async feedstocks => {
+							var storageFeedstocks = [];
+							
+							for(i in feedstocks){
+								params = [];
+								values = [];
+
+								if(req.query.storage){
+									params.push('storage_id');
+									values.push(req.query.storage);
+								};
+
+								params.push('feedstock_id');
+								values.push(feedstocks[i].id);
+
+								var storageRows = await Feedstock.storage.feedstock.filter(params, values);
+
+								for(j in storageRows){
+									storageFeedstocks.push(storageRows[j]);
+								}
+							};
+
+							res.send({ feedstocks, storageFeedstocks });
+						})
+						.catch(err => {
+							console.log(err);
+							res.send({ msg: "Ocorreu um erro ao filtrar as matérias primas, favor contatar o suporte" });
+						});
+				};
+			},
+			amount: {
+				set: async (req, res) => {
+					if(!await userController.verifyAccess(req, res, ['adm','COR-GER'])){
+						return res.redirect('/');
+					};
+
+					if(req.query.id){
+						if(isNaN(req.query.amount) || req.query.amount < 0 || req.query.amount == ""){
+							return res.send({ msg: "O valor inserido é inválido." });
+						};
+
+						const updatedFeedstock = {
+							id: req.query.id,
+							amount: 0
+						};
+
+						try {
+							const storage_feedstock = await Feedstock.storage.feedstock.findById(req.query.id);
+							const feedstock = await Feedstock.findById(storage_feedstock[0].feedstock_id);
+							
+							updatedFeedstock.amount = feedstock[0].standard * req.query.amount;
+							
+							await Feedstock.storage.feedstock.amount.set(updatedFeedstock);
+							res.send({ done: "Atualizado com sucesso!" });
+						} catch (err) {
+							res.send({ msg: "Ocorreu um erro ao atualizar a quantidade, favor contatar o suporte." });
+						};
+					};
+				}
+			}
+		}		
+	},
 	request: {
 		index: async (req, res) => {
 			if(!await userController.verifyAccess(req, res, ['adm','man','cut','COR-GER'])){
@@ -138,7 +314,7 @@ const feedstockController = {
 			};
 
 			const feedstockColors = await Feedstock.colorList();
-			const feedstockStorages = await Feedstock.storageList();
+			const feedstockStorages = await Feedstock.storage.list();
 			res.render('feedstock/request', { user: req.user, feedstockColors, feedstockStorages });
 		},
 		save: async (req, res) => {
@@ -164,7 +340,7 @@ const feedstockController = {
 					} else if(request.feedstocks[i].uom == 'un'){
 						request.feedstocks[i].releasedAmount = request.feedstocks[i].amount;
 					};
-					let storage_feedstock = await Feedstock.findInStorage(['storage_id', 'feedstock_id'], [request.storage_id, feedstock[0].id]);
+					let storage_feedstock = await Feedstock.storage.feedstock.filter(['storage_id', 'feedstock_id'], [request.storage_id, feedstock[0].id]);
 					if(storage_feedstock[0].amount < request.feedstocks[i].releasedAmount){
 						if(request.feedstocks[i].uom == 'cm'){
 							return res.send({ msg: "Não há estoque de "+feedstock[0].name+" "+feedstock[0].color+" suficiente para realizar o pedido.\n Quantidade em estoque: "+storage_feedstock[0].amount / feedstock[0].standard });
@@ -257,7 +433,7 @@ const feedstockController = {
 						storage_id: req.body.storage_id,
 						amount: request_feedstocks[i].amount
 					};
-					await Feedstock.decreaseStorageFeedstockAmount(option);
+					await Feedstock.storage.feedstock.amount.decrease(option);
 				};
 				res.send({ done: "Pedido confirmado com sucesso." });
 			} catch (err) {
@@ -273,7 +449,7 @@ const feedstockController = {
 			};
 
 			const feedstockColors = await Feedstock.colorList();
-			const feedstockStorages = await Feedstock.storageList();
+			const feedstockStorages = await Feedstock.storage.list();
 			res.render('feedstock/regress', { user: req.user, feedstockColors, feedstockStorages });
 		},
 		save: async (req, res) => {
@@ -384,7 +560,7 @@ const feedstockController = {
 						storage_id: req.body.storage_id,
 						amount: regress_feedstocks[i].amount
 					};
-					await Feedstock.increaseStorageFeedstockAmount(option);
+					await Feedstock.storage.feedstock.amount.increase(option);
 				};
 				res.send({ done: "Pedido de retorno confirmado com sucesso." });
 			} catch (err) {
@@ -558,7 +734,7 @@ const feedstockController = {
 			
 			const feedstockSuppliers = await Feedstock.supplier.list();
 			const feedstockColors = await Feedstock.colorList();
-			const feedstockStorages = await Feedstock.storageList();
+			const feedstockStorages = await Feedstock.storage.list();
 			res.render('feedstock/purchase', { user: req.user, feedstockColors, feedstockStorages, feedstockSuppliers });
 		},
 		manage: async (req, res) => {
@@ -677,7 +853,7 @@ const feedstockController = {
 						storage_id: req.body.storage_id,
 						amount: purchase_feedstocks[i].amount
 					};
-					await Feedstock.increaseStorageFeedstockAmount(option);
+					await Feedstock.storage.feedstock.amount.increase(option);
 				};
 				res.send({ done: "Compra confirmada com sucesso." });
 			} catch (err) {
@@ -685,179 +861,7 @@ const feedstockController = {
 				res.send({ msg: "Erro ao confirmar a compra, favor contatar o suporte," });
 			};
 		}
-	},
-	storage: {
-		index: async (req, res) => {
-			if(!await userController.verifyAccess(req, res, ['adm','man','sto','cut','COR-GER'])){
-				return res.redirect('/');
-			};
-
-			const feedstockColors = await Feedstock.colorList();
-			const feedstockStorages = await Feedstock.storageList();
-			res.render('feedstock/storage', { user: req.user, feedstockColors, feedstockStorages });
-		},
-		manage: async (req, res) => {
-			if(!await userController.verifyAccess(req, res, ['adm','man','COR-GER'])){
-				return res.redirect('/');
-			};
-
-			const feedstockColors = await Feedstock.colorList();
-			const feedstockStorages = await Feedstock.storageList();
-			res.render('feedstock/storage_manage', { feedstockColors: feedstockColors, feedstockStorages: feedstockStorages, user: req.user });
-		},
-		setAmount: async (req, res) => {
-			if(!await userController.verifyAccess(req, res, ['adm','COR-GER'])){
-				return res.redirect('/');
-			};
-
-			if(req.query.id){
-				if(isNaN(req.query.amount) || req.query.amount < 0 || req.query.amount == ""){
-					return res.send({ msg: "O valor inserido é inválido." });
-				};
-
-				const updatedFeedstock = {
-					id: req.query.id,
-					amount: 0
-				};
-
-				try {
-					const storage_feedstock = await Feedstock.findInStorageById(req.query.id);
-					const feedstock = await Feedstock.findById(storage_feedstock[0].feedstock_id);
-					
-					updatedFeedstock.amount = feedstock[0].standard * req.query.amount;
-					
-					await Feedstock.setStorageAmount(updatedFeedstock);
-					res.send({ done: "Atualizado com sucesso!" });
-				} catch (err) {
-					res.send({ msg: "Ocorreu um erro ao atualizar a quantidade, favor contatar o suporte." });
-				};
-			};
-		},
-		create: async (req, res) => {
-			if(!await userController.verifyAccess(req, res, ['adm','man'])){
-				return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
-			};
-
-			if(req.body.name.length < 3 || req.body.name.length > 30){return res.send({ msg: 'Nome de Estoque inválido!' })};
-
-			try {
-				var result = await Feedstock.storage.save(req.body.name);	
-			} catch (err){
-				console.log(err);
-				return res.send({ msg: 'Ocorreu um erro ao criar este banco de dados favor entrar em contato com o suporte.' });
-			};
-
-			try {
-				const feedstocks = await Feedstock.list();
-
-				for(i in feedstocks){
-					var insert = {
-						storage_id: result.insertId,
-						feedstock_id: feedstocks[i].id,
-						amount: 0
-					};
-
-					await Feedstock.insertInStorage(insert);
-				};
-				
-				res.send({ done: 'Estoque criado e matérias-primas inseridas com sucesso!' });
-			} catch (err){
-				console.log(err);
-				return res.send({ msg: 'Ocorreu um erro ao registrar uma matéria-prima ao estoque, favor contatar o suporte.' });
-			};
-		},
-		list: async (req, res) => {
-			if(!await userController.verifyAccess(req, res, ['adm','man','sto'])){
-				return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
-			};
-
-			try {
-				const storages = await Feedstock.storageList();
-				res.send(storages);
-			} catch (err) {
-				console.log(err);
-				res.send({ msg: "Ocorreu um erro ao listar os estoques." });
-			};
-		},
-		filter: async (req, res) => {
-			if(!await userController.verifyAccess(req, res, ['adm','man','sto','COR-GER'])){
-				return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
-			};
-
-			let params = [];
-			let values = [];
-
-			if(req.query.name){
-				Feedstock.findByName(req.query.name)
-					.then(async feedstocks => {
-						var storageFeedstocks = [];
-						for(i in feedstocks){
-							params = [];
-							values = [];
-
-							if(req.query.storage){
-								params.push('storage_id');
-								values.push(req.query.storage);
-							};
-
-							params.push('feedstock_id');
-							values.push(feedstocks[i].id);
-
-							var storageRows = await Feedstock.findInStorage(params, values);
-
-							for(j in storageRows){
-								storageFeedstocks.push(storageRows[j]);
-							};
-						};
-						res.send({ feedstocks, storageFeedstocks });
-					})
-					.catch(err => {
-						console.log(err);
-						res.send({ msg: "Ocorreu um erro ao filtrar as matérias primas, favor contatar o suporte" });
-					});
-			} else {
-				if(parseInt(req.query.code)){
-					params.push("code");
-					values.push(req.query.code);
-				};
-
-				if(req.query.color){
-					params.push("color");
-					values.push(req.query.color);
-				};
-
-				Feedstock.filter(params, values)
-					.then(async feedstocks => {
-						var storageFeedstocks = [];
-						
-						for(i in feedstocks){
-							params = [];
-							values = [];
-
-							if(req.query.storage){
-								params.push('storage_id');
-								values.push(req.query.storage);
-							};
-
-							params.push('feedstock_id');
-							values.push(feedstocks[i].id);
-
-							var storageRows = await Feedstock.findInStorage(params, values);
-
-							for(j in storageRows){
-								storageFeedstocks.push(storageRows[j]);
-							}
-						};
-
-						res.send({ feedstocks, storageFeedstocks });
-					})
-					.catch(err => {
-						console.log(err);
-						res.send({ msg: "Ocorreu um erro ao filtrar as matérias primas, favor contatar o suporte" });
-					});
-			};
-		}
-	}
+	}	
 };
 
 module.exports = feedstockController;

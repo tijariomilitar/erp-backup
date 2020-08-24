@@ -39,9 +39,9 @@ router.post('/purchase/filter', feedstockController.purchase.filter);
 
 router.get('/storage', feedstockController.storage.index);
 router.get('/storage/manage', feedstockController.storage.manage);
-router.put('/storage/manage/amount/set', feedstockController.storage.setAmount);
 router.post('/storage/create', feedstockController.storage.create);
-// router.get('/storage/list', feedstockController.storage.list);
-router.get('/storage/filter', feedstockController.storage.filter);
+router.get('/storage/list', feedstockController.storage.list);
+router.put('/storage/manage/amount/set', feedstockController.storage.feedstock.amount.set);
+router.get('/storage/filter', feedstockController.storage.feedstock.filter);
 
 module.exports = router;

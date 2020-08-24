@@ -365,7 +365,7 @@ const productController = {
 					// needed to create a variable to handle async problem down in next coment
 					let feedstockAmount = production_feedstocks[i].amount;
 					let feedstock = await Feedstock.findById(production_feedstocks[i].feedstock_id);
-					let storage_feedstock = await Feedstock.findInStorage(['storage_id', 'feedstock_id'], [production.storage_id, feedstock[0].id]);
+					let storage_feedstock = await Feedstock.storage.feedstock.filter(['storage_id', 'feedstock_id'], [production.storage_id, feedstock[0].id]);
 					// if use production_feedstocks[i].amount instead variable the value is broken
 					feedstock[0].amount = feedstockAmount;
 					feedstock[0].amountInStorage = storage_feedstock[0].amount;
@@ -406,22 +406,49 @@ const productController = {
 				storage_id: req.body.storage_id,
 				user: req.user.name,
 				products: JSON.parse(req.body.products),
-				feedstocks: {
-					enough: [],
-					notEnough: []
-				}
+				feedstocks: []
 			};
 
 			// console.log(production);
 			// return res.send({ msg: "Esta função está sendo implementada." });
 
 			try {
-				// await Product.production.save(production);
+				// Colecting production feedstock data
+				let production_feedstock_list = [];
 				for(i in production.products){
-					console.log(production.products[i]);
-					// await Product.production.product.add(products[i]);
+					let product_feedstocks = await Product.feedstock.list(production.products[i].id);
+					for(j in product_feedstocks){
+						production.products[i].feedstocks.push(product_feedstocks[j]);
+
+						product_feedstocks[j].amount = product_feedstocks[j].amount * production.products[i].amount;
+						production_feedstock_list.push(product_feedstocks[j]);
+					};
 				};
-				res.send({ msg: "Esta função está sendo implementada." });
+
+				production.feedstocks = production_feedstock_list.reduce((production_feedstocks, feedstock_list) => {
+					for(i in production_feedstocks){
+						if(production_feedstocks[i].feedstock_id == feedstock_list.feedstock_id){
+							production_feedstocks[i].amount += feedstock_list.amount;
+							return production_feedstocks;
+						};
+					};
+					production_feedstocks.push(feedstock_list);
+					return production_feedstocks;
+				}, production.feedstocks);
+
+				for(i in production.feedstocks){
+					let feedstock = await Feedstock.findById(production.feedstocks[i].feedstock_id);
+					production.feedstocks[i].code = feedstock[0].code;
+					production.feedstocks[i].name = feedstock[0].name;
+					production.feedstocks[i].color = feedstock[0].color;
+					production.feedstocks[i].standard = feedstock[0].standard;
+					production.feedstocks[i].uom = feedstock[0].uom;
+				};
+
+				// Executing storage maths
+				// here
+
+				res.send({ production });
 			} catch (err){
 				console.log(err);
 				res.send({ msg: "Ocorreu um erro ao solicitar produção." });
