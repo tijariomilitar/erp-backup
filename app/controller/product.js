@@ -445,8 +445,20 @@ const productController = {
 					production.feedstocks[i].uom = feedstock[0].uom;
 				};
 
-				// Executing storage maths
-				// here
+				const saved_production = await Product.production.save(production);
+				production.id = saved_production.insertId;
+				for(i in production.products){
+					await Product.production.product.add(production.id, production.products[i]);
+				};
+				for(i in production.feedstocks){
+					if(production.feedstocks[i].uom == 'cm'){
+						// production.feedstocks[i].amount = lib.roundToInt(production.feedstocks[i].amount / production.feedstocks[i].standard);
+						production.feedstocks[i].amount = lib.roundToInt(production.feedstocks[i].amount / production.feedstocks[i].standard);
+					} else if(production.feedstocks[i].uom == 'un'){
+						production.feedstocks[i].amount = production.feedstocks[i].amount;
+					};
+					await Product.production.feedstock.add(production.id, production.feedstocks[i]);
+				};
 
 				res.send({ production });
 			} catch (err){
@@ -537,18 +549,14 @@ const productController = {
 
 			try {
 				const production = await Product.production.findById(req.params.id);
-				const production_products = await Product.production.product.list(req.params.id)
-				const production_feedstocks = await Product.production.feedstock.list(req.params.id)
-				for(i in production_feedstocks){
-					let feedstock = await Feedstock.findById(production_feedstocks[i].feedstock_id);
-					production_feedstocks[i].feedstock_standard = feedstock[0].standard;
-				};
+				const production_products = await Product.production.product.list(req.params.id);
+				const production_feedstocks = await Product.production.feedstock.list(req.params.id);
 				res.send({ production, production_products, production_feedstocks });
 			} catch (err) {
 				console.log(err);
 				res.send({ msg: "Erro ao encontrar a produção" });
 			};
-		},
+		}
 	},
 	categorySave: async (req, res) => {
 		if(!await userController.verifyAccess(req, res, ['adm'])){

@@ -181,11 +181,11 @@ $(() => {
 			success: (response) => {
 				// if(API.verifyResponse(response, "product-production-form")){return};
 
+				console.log(response);
+
 				response.production.feedstocks.sort((a, b) => {
 					return a.code - b.code;
 				});
-
-				console.log(response)
 
 				// product_production_kart = [];
 

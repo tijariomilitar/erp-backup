@@ -141,7 +141,7 @@ Product.production = {
 			let query = "INSERT INTO cms_wt_erp.product_production_product (production_id, product_id, product_info, amount) VALUES ('"
 				+production_id+"', '"
 				+product.id+"', '"
-				+product.info+"', '"
+				+product.code+" "+product.name+" "+product.color+" "+product.size+"', '"
 				+product.amount+"');";
 			return db(query);
 		},
@@ -152,14 +152,13 @@ Product.production = {
 	},
 	feedstock: {
 		add: async (production_id, feedstock) => {
-			let query = "INSERT INTO cms_wt_erp.product_production_feedstock (production_id, feedstock_id, feedstock_info, feedstock_uom, amount, standardAmount, releasedAmount) VALUES ('"
+			let query = "INSERT INTO cms_wt_erp.product_production_feedstock (production_id, feedstock_id, feedstock_info, feedstock_uom, amount, standard) VALUES ('"
 				+production_id+"', '"
 				+feedstock.id+"', '"
-				+feedstock.info+"', '"
+				+feedstock.code+" "+feedstock.name+" "+feedstock.color+"', '"
 				+feedstock.uom+"', '"
 				+feedstock.amount+"', '"
-				+feedstock.standardAmount+"', '"
-				+feedstock.releasedAmount+"');";
+				+feedstock.standard+"');";
 			return db(query);
 		},
 		list: async (id) => {
