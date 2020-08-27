@@ -5,6 +5,7 @@ $(() => {
 
 		let feedstock_id = document.getElementById("product-addFeedstock-form").elements.namedItem('feedstock_id').value;
 		let amount = document.getElementById("product-addFeedstock-form").elements.namedItem('feedstock_amount').value;
+		let measure = document.getElementById("product-addFeedstock-form").elements.namedItem('feedstock_measure').value;
 
 		if(feedstock_id < 1 || !feedstock_id){
 			alert("É necessário selecionar a matéria-prima");
@@ -12,6 +13,11 @@ $(() => {
 		};
 
 		if(amount < 0.01 || !amount){
+			alert("É necessário preencher a quantidade de matéria-prima");
+			return document.getElementById('product-addFeedstock-form').elements.namedItem("submit").disabled = false;
+		};
+
+		if(measure < 0.01 || !measure){
 			alert("É necessário preencher a quantidade de matéria-prima");
 			return document.getElementById('product-addFeedstock-form').elements.namedItem("submit").disabled = false;
 		};
@@ -35,6 +41,7 @@ $(() => {
 				document.getElementById("product-addFeedstock-form").elements.namedItem('feedstock_id').innerHTML = "";
 				document.getElementById("product-addFeedstock-form").elements.namedItem('feedstock_id').disabled = false;
 				document.getElementById("product-addFeedstock-form").elements.namedItem('feedstock_amount').value = "";
+				document.getElementById("product-addFeedstock-form").elements.namedItem('feedstock_measure').value = "";
 				document.getElementById('product-addFeedstock-form').elements.namedItem("submit").disabled = false;
 			}
 		});

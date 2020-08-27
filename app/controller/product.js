@@ -232,7 +232,8 @@ const productController = {
 				id: req.body.id,
 				product_id: req.body.product_id,
 				feedstock_id: req.body.feedstock_id,
-				amount: parseFloat(req.body.feedstock_amount)
+				amount: parseFloat(req.body.feedstock_amount),
+				measure: parseFloat(req.body.feedstock_measure)
 			};
 
 			try {
@@ -324,70 +325,43 @@ const productController = {
 			const production = {
 				storage_id: req.body.storage_id,
 				products: JSON.parse(req.body.products),
-				feedstocks: {
-					enough: [],
-					notEnough: []
-				}
+				feedstocks: []
 			};
 
 			try {
-				let product_feedstocks_array = [];
+				// Colecting production feedstock data
+				let production_feedstock_list = [];
 				for(i in production.products){
 					let product_feedstocks = await Product.feedstock.list(production.products[i].id);
 					for(j in product_feedstocks){
-						product_feedstocks_array.push(product_feedstocks[j]);
 						production.products[i].feedstocks.push(product_feedstocks[j]);
+
+						product_feedstocks[j].amount = product_feedstocks[j].amount * production.products[i].amount;
+						production_feedstock_list.push(product_feedstocks[j]);
 					};
 				};
 
-				product_feedstocks_array = production.products.reduce((array, production_product) => {
-					for(i in array){
-						if(array[i].product_id == production_product.id){
-							array[i].amount = array[i].amount * production_product.amount;
+				production.feedstocks = production_feedstock_list.reduce((production_feedstocks, feedstock_list) => {
+					for(i in production_feedstocks){
+						if(production_feedstocks[i].feedstock_id == feedstock_list.feedstock_id){
+							production_feedstocks[i].amount += feedstock_list.amount;
+							return production_feedstocks;
 						};
 					};
-					return array;
-				}, product_feedstocks_array);
+					production_feedstocks.push(feedstock_list);
+					return production_feedstocks;
+				}, production.feedstocks);
 
-				let production_feedstocks = [];
-				production_feedstocks = product_feedstocks_array.reduce((array, feedstock) => {
-					for(i in array){
-						if(array[i].feedstock_id == feedstock.feedstock_id){
-							array[i].amount += feedstock.amount;
-							return array;
-						};
-					};
-					array.push(feedstock);
-					return array;
-				}, production_feedstocks);
-
-				for(i in production_feedstocks){
-					// needed to create a variable to handle async problem down in next coment
-					let feedstockAmount = production_feedstocks[i].amount;
-					let feedstock = await Feedstock.findById(production_feedstocks[i].feedstock_id);
-					let storage_feedstock = await Feedstock.storage.feedstock.filter(['storage_id', 'feedstock_id'], [production.storage_id, feedstock[0].id]);
-					// if use production_feedstocks[i].amount instead variable the value is broken
-					feedstock[0].amount = feedstockAmount;
-					feedstock[0].amountInStorage = storage_feedstock[0].amount;
-					
-					if(feedstock[0].uom == 'cm'){
-						feedstock[0].standardAmount = Math.round(feedstock[0].amount / feedstock[0].standard);
-						feedstock[0].releasedAmount = feedstock[0].standard * feedstock[0].standardAmount;
-						if(feedstock[0].standardAmount > feedstock[0].amountInStorage / feedstock[0].standard){
-							production.feedstocks.notEnough.push(feedstock[0]);
-						} else {
-							production.feedstocks.enough.push(feedstock[0]);
-						};
-					} else {
-						feedstock[0].standardAmount = feedstock[0].amount;
-						feedstock[0].releasedAmount = feedstock[0].amount;
-						if(feedstock[0].standardAmount > feedstock[0].amountInStorage){
-							production.feedstocks.notEnough.push(feedstock[0]);
-						} else {
-							production.feedstocks.enough.push(feedstock[0]);
-						};
-					};
+				for(i in production.feedstocks){
+					let feedstock = await Feedstock.findById(production.feedstocks[i].feedstock_id);
+					production.feedstocks[i].code = feedstock[0].code;
+					production.feedstocks[i].name = feedstock[0].name;
+					production.feedstocks[i].color = feedstock[0].color;
+					production.feedstocks[i].standard = feedstock[0].standard;
+					production.feedstocks[i].uom = feedstock[0].uom;
 				};
+
+				console.log(production);
 
 				res.send({ production });
 			} catch (err) {

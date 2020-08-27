@@ -79,14 +79,15 @@ Product.image = {
 
 Product.feedstock = {
 	add: async (insertion) => {
-		let query = "INSERT INTO cms_wt_erp.product_feedstock (product_id, feedstock_id, amount) VALUES ('"
+		let query = "INSERT INTO cms_wt_erp.product_feedstock (product_id, feedstock_id, amount, measure) VALUES ('"
 			+insertion.product_id+"', '"
 			+insertion.feedstock_id+"', '"
-			+insertion.amount+"');";
+			+insertion.amount+"', '"
+			+insertion.measure+"');";
 		return db(query);
 	},
 	update: async (insertion) => {
-		let query = "UPDATE cms_wt_erp.product_feedstock SET amount='"+insertion.amount+"' WHERE id='"+insertion.id+"';";
+		let query = "UPDATE cms_wt_erp.product_feedstock SET amount='"+insertion.amount+"', measure='"+insertion.measure+"' WHERE id='"+insertion.id+"';";
 		return db(query);
 	},
 	list: async (id) => {
