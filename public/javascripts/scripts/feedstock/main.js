@@ -59,7 +59,7 @@ $(function(){
 						} else if (location==="feedstockCatalog"){
 							renderFeedstocks(response.feedstocks, pageSize, page, location);
 						} else if (location==="productAddFeedstock"){
-							fillFeedstockSelect(response.feedstocks, document.getElementById("product-addFeedstock-form").elements.namedItem('feedstock_id'));
+							fillFeedstockSelect(response.feedstocks, document.getElementById("product-feedstock-add-form").elements.namedItem('feedstock_id'));
 						} else if (location==="feedstockSupplierAddFeedstock"){
 							fillFeedstockSelect(response.feedstocks, document.getElementById("feedstock-supplier-addFeedstock-form").elements.namedItem('feedstock_id'));
 						} else if (location==="feedstockRequest"){
@@ -73,7 +73,7 @@ $(function(){
 						} else if (location==="feedstockCatalog"){
 							lib.clearTable('feedstock-catalog-filter-tbl', location);
 						} else if (location==="productAddFeedstock"){
-							lib.clearSelect(document.getElementById("product-addFeedstock-form").elements.namedItem('feedstock_id'));
+							lib.clearSelect(document.getElementById("product-feedstock-add-form").elements.namedItem('feedstock_id'));
 						} else if (location==="feedstockSupplierAddFeedstock"){
 							lib.clearSelect(document.getElementById("feedstock-supplier-addFeedstock-form").elements.namedItem('feedstock_id'));
 						} else if (location==="feedstockRequest"){

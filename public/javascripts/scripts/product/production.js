@@ -91,11 +91,7 @@ $(() => {
 				if(API.verifyResponse(response, "product-production-simulation")){return};
 
 				
-				response.production.feedstocks.enough.sort((a, b) => {
-					return a.code - b.code;
-				});
-
-				response.production.feedstocks.notEnough.sort((a, b) => {
+				response.production.feedstocks.sort((a, b) => {
 					return a.code - b.code;
 				});
 
@@ -107,39 +103,23 @@ $(() => {
 				html += "<td>Nome</td>";
 				html += "<td>Cor</td>";
 				html += "<td>Metragem</td>";
-				html += "<td>Qtd</td>";
-				html += "<td>Estoque</td>";
+				// html += "<td>Qtd</td>";
 				html += "</tr>";
-				for(i in response.production.feedstocks.enough){
+				for(i in response.production.feedstocks){
 					html += "<tr>";
-					html += "<td class='nowrap'>"+response.production.feedstocks.enough[i].code+"</td>";
-					html += "<td>"+response.production.feedstocks.enough[i].name+"</td>";
-					html += "<td>"+response.production.feedstocks.enough[i].color+"</td>";
-					html += "<td class='nowrap'>"+response.production.feedstocks.enough[i].amount+""+response.production.feedstocks.enough[i].uom+"</td>";
-					html += "<td class='nowrap'>"+response.production.feedstocks.enough[i].standardAmount+"un</td>";
-					// html += "<td class='nowrap'>"+lib.roundValue(response.production.feedstocks.enough[i].amount/response.production.feedstocks.enough[i].standard)+"</td>";
-					html += "<td class='nowrap'>"+lib.roundToInt(response.production.feedstocks.enough[i].amountInStorage/response.production.feedstocks.enough[i].standard)+""+response.production.feedstocks.enough[i].uom+"</td>";
-					html += "</tr>";
-				};
-				if(response.production.feedstocks.notEnough.length){
-					html += "<tr><td>---</td><td>ESTOQUE INSUFICIENTE</td><td>---</td><td>---</td><td>---</td><td>---</td></tr>";
-				};
-				for(i in response.production.feedstocks.notEnough){
-					html += "<tr>";
-					html += "<td class='nowrap'>"+response.production.feedstocks.notEnough[i].code+"</td>";
-					html += "<td>"+response.production.feedstocks.notEnough[i].name+"</td>";
-					html += "<td>"+response.production.feedstocks.notEnough[i].color+"</td>";
-					html += "<td class='nowrap'>"+response.production.feedstocks.notEnough[i].amount+""+response.production.feedstocks.notEnough[i].uom+"</td>";
-					html += "<td class='nowrap'>"+response.production.feedstocks.notEnough[i].standardAmount+"un</td>";
-					// html += "<td class='nowrap'>"+lib.roundValue(response.production.feedstocks.notEnough[i].amount/response.production.feedstocks.notEnough[i].standard)+"</td>";
-					html += "<td class='nowrap'>"+response.production.feedstocks.notEnough[i].amountInStorage+""+response.production.feedstocks.notEnough[i].uom+"</td>";
+					html += "<td class='nowrap'>"+response.production.feedstocks[i].code+"</td>";
+					html += "<td>"+response.production.feedstocks[i].name+"</td>";
+					html += "<td>"+response.production.feedstocks[i].color+"</td>";
+					html += "<td class='nowrap'>"+response.production.feedstocks[i].amount+""+response.production.feedstocks[i].uom+"</td>";
+					// html += "<td class='nowrap'>"+response.production.feedstocks[i].standard+"un</td>";
+					// html += "<td class='nowrap'>"+lib.roundValue(response.production.feedstocks[i].amount/response.production.feedstocks[i].standard)+"</td>";
 					html += "</tr>";
 				};
 
 				document.getElementById("product-production-simulation-box").style.display = "block";
 				document.getElementById("product-production-simulation-tbl").innerHTML = html;
 
-				if(!response.production.feedstocks.notEnough.length){
+				if(!response.production.feedstocks.length){
 					document.getElementById("product-production-form").style.display = "block";
 					document.getElementById("product-production-form").elements.namedItem("storage_id").value = storage_id;
 					document.getElementById("product-production-form").elements.namedItem("storage_id").disabled = true;
