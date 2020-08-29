@@ -115,16 +115,16 @@ function showProduct(id, admin){
 			html += "</tr>";
 			html += "<tr>";
 			if(admin){
-				document.getElementById("product-addFeedstock-form").elements.namedItem('id').value = "";
-				document.getElementById("product-addFeedstock-form").elements.namedItem('product_id').value = response.product[0].id;
-				document.getElementById("product-addFeedstock-form").elements.namedItem('feedstock_id').disabled = false;
+				document.getElementById("product-feedstock-add-form").elements.namedItem('id').value = "";
+				document.getElementById("product-feedstock-add-form").elements.namedItem('product_id').value = response.product[0].id;
+				document.getElementById("product-feedstock-add-form").elements.namedItem('feedstock_id').disabled = false;
 				document.getElementById('product-feedstock-box').style.display = "none";
 
 				html += "<td><a class='tbl-show-link nowrap' onclick='productAddImage("+response.product[0].id+")'>+ Img</a></td>";
 				html += `<td><a class="tbl-show-link nowrap" onclick="lib.displayDiv('product-feedstock-div')">+ M-P</a></td>`;
 				html += `<td><a class="tbl-show-link" onclick="\
 							if(document.getElementById('product-feedstock-box').style.display == 'none'){\
-								productFeedstockRender(`+response.product[0].id+`)\
+								productFeedstockList(`+response.product[0].id+`)\
 							} else { \
 								document.getElementById('product-feedstock-box').style.display = 'none' \
 							}">Matérias</a>`;

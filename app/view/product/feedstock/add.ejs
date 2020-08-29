@@ -1,0 +1,8 @@
+<form class="box-1" id="product-feedstock-add-form">
+	<input type="hidden" name="id" value="">
+	<input type="hidden" name="product_id">
+	<select name="feedstock_id" class="btn-generic-big"></select>
+	<input type="number" name="feedstock_amount" class="btn-generic-small price" step="1" placeholder="Qtd" onfocus="if(this.value < 1){this.value=''}" onblur="if(this.value < 1){this.value=''}"/>
+	<input type="number" name="feedstock_measure" class="btn-generic-small price" step="0.01" placeholder="cm" onfocus="if(this.value < 0.5){this.value=''}" onblur="if(this.value < 0.00){this.value=''}"/>
+	<input type="submit" name="submit" class="btn-submit" value="Cadastrar">
+</form>

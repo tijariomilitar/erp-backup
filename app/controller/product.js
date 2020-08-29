@@ -255,13 +255,27 @@ const productController = {
 			};
 
 			try {
-				var feedstocks = [];
-				const product_feedstocks = await Product.feedstock.list(req.params.id);
-				for(i in product_feedstocks){
-					var feedstock = await Feedstock.findById(product_feedstocks[i].feedstock_id);
+				let product = { feedstocks: [] };
+				let feedstocks = [];
+				product.feedstocks = await Product.feedstock.list(req.params.id);
+
+				for(i in product.feedstocks){
+					let feedstock = await Feedstock.findById(product.feedstocks[i].feedstock_id);
 					feedstocks.push(feedstock[0]);
 				};
-				res.send({ product_feedstocks, feedstocks });
+
+				for(i in product.feedstocks){
+					for(j in feedstocks){
+						if(product.feedstocks[i].feedstock_id == feedstocks[j].id){
+							product.feedstocks[i].code = feedstocks[j].code;
+							product.feedstocks[i].name = feedstocks[j].name;
+							product.feedstocks[i].color = feedstocks[j].color;
+							product.feedstocks[i].uom = feedstocks[j].uom;
+						};
+					};
+				};
+
+				res.send({ product });
 			} catch (err) {
 				console.log(err);
 				res.send({ msg: "Ocorreu um erro ao listar as matérias-primas do produto, favor contatar o suporte." });
