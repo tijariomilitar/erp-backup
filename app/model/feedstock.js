@@ -92,11 +92,11 @@ Feedstock.supplier = {
 		return db(query);
 	},
 	feedstock: {
-		add: async (insertion) => {
+		add: async (supplier_feedstock) => {
 			let query = "INSERT INTO cms_wt_erp.feedstock_supplier_storage (supplier_id, feedstock_id, value) VALUES ('"
-				+insertion.supplier_id+"', '"
-				+insertion.feedstock_id+"', '"
-				+insertion.value+"');";
+				+supplier_feedstock.supplier_id+"', '"
+				+supplier_feedstock.feedstock_id+"', '"
+				+supplier_feedstock.value+"');";
 			return db(query);
 		},
 		update: async (insertion) => {

@@ -78,16 +78,17 @@ Product.image = {
 };
 
 Product.feedstock = {
-	add: async (insertion) => {
-		let query = "INSERT INTO cms_wt_erp.product_feedstock (product_id, feedstock_id, amount, measure) VALUES ('"
-			+insertion.product_id+"', '"
-			+insertion.feedstock_id+"', '"
-			+insertion.amount+"', '"
-			+insertion.measure+"');";
+	add: async (product_feedstock) => {
+		let query = "INSERT INTO cms_wt_erp.product_feedstock (product_id, feedstock_id, uom, amount, measure) VALUES ('"
+			+product_feedstock.product_id+"', '"
+			+product_feedstock.feedstock_id+"', '"
+			+product_feedstock.uom+"', '"
+			+product_feedstock.amount+"', '"
+			+product_feedstock.measure+"');";
 		return db(query);
 	},
-	update: async (insertion) => {
-		let query = "UPDATE cms_wt_erp.product_feedstock SET amount='"+insertion.amount+"', measure='"+insertion.measure+"' WHERE id='"+insertion.id+"';";
+	update: async (product_feedstock) => {
+		let query = "UPDATE cms_wt_erp.product_feedstock SET uom='"+product_feedstock.uom+"', amount='"+product_feedstock.amount+"', measure='"+product_feedstock.measure+"' WHERE id='"+product_feedstock.id+"';";
 		return db(query);
 	},
 	list: async (id) => {

@@ -11,6 +11,14 @@ select:required:invalid {
 		display: none;
 	}
 
+.fieldset-generic {
+	border: 1px solid #f0f0f0;
+}
+
+.fieldset-generic:hover {
+	border: 1px #ccc solid;
+}
+
 .alert-msg {
 	background-color:#fff;
 	height: auto;

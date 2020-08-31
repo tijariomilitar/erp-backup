@@ -30,7 +30,7 @@ $(function(){
 			}
 		});
 	});
-	
+
 	$("#feedstock-filter-form").on('submit', (event) => {
 		event.preventDefault();
 

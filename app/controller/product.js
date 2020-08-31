@@ -228,20 +228,25 @@ const productController = {
 				return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
 			};
 
-			const insertion = {
+			const product_feedstock = {
 				id: req.body.id,
 				product_id: req.body.product_id,
 				feedstock_id: req.body.feedstock_id,
-				amount: parseFloat(req.body.feedstock_amount),
+				uom: req.body.feedstock_uom,
+				amount: parseInt(req.body.feedstock_amount),
 				measure: parseFloat(req.body.feedstock_measure)
 			};
 
+			if(product_feedstock.uom == 'un') {
+				product_feedstock.measure = 1;
+			};
+
 			try {
-				if(!insertion.id || insertion.id < 1){
-					await Product.feedstock.add(insertion);
+				if(!product_feedstock.id || product_feedstock.id < 1) {
+					await Product.feedstock.add(product_feedstock);
 					res.send({ done: "Matéria-Prima adicionada com sucesso." });
 				} else {
-					await Product.feedstock.update(insertion);
+					await Product.feedstock.update(product_feedstock);
 					res.send({ done: "Matéria-Prima atualizada com sucesso." });
 				};
 			} catch (err) {
@@ -349,9 +354,17 @@ const productController = {
 					let product_feedstocks = await Product.feedstock.list(production.products[i].id);
 					for(j in product_feedstocks){
 						production.products[i].feedstocks.push(product_feedstocks[j]);
+						if(product_feedstocks[j].uom == 'un'){
+							product_feedstocks[j].amount = product_feedstocks[j].amount * production.products[i].amount;
+							production_feedstock_list.push(product_feedstocks[j]);
+						} else if(product_feedstocks[j].uom == 'cm'){
+							product_feedstocks[j].measure = product_feedstocks[j].amount * product_feedstocks[j].measure;
+							product_feedstocks[j].measure = product_feedstocks[j].measure * production.products[i].amount;
+							
+							console.log(product_feedstocks[j]);
 
-						product_feedstocks[j].amount = product_feedstocks[j].amount * production.products[i].amount;
-						production_feedstock_list.push(product_feedstocks[j]);
+							production_feedstock_list.push(product_feedstocks[j]);
+						};
 					};
 				};
 
@@ -375,7 +388,7 @@ const productController = {
 					production.feedstocks[i].uom = feedstock[0].uom;
 				};
 
-				console.log(production);
+				// console.log(production);
 
 				res.send({ production });
 			} catch (err) {
@@ -401,7 +414,6 @@ const productController = {
 			// return res.send({ msg: "Esta função está sendo implementada." });
 
 			try {
-				// Colecting production feedstock data
 				let production_feedstock_list = [];
 				for(i in production.products){
 					let product_feedstocks = await Product.feedstock.list(production.products[i].id);

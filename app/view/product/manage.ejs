@@ -69,21 +69,23 @@
 					<div class="box-1" id="product-feedstock-div" style="display:none">
 						<div id="product-addFeedstock-div">
 							<!-- Feedstock filter form -->
-							<form id="feedstock-filter-form" class="box-1">
-								<input type="hidden" name="location" value="productAddFeedstock">
-								<input type="text" name="feedstock_code" class="btn-generic-small" placeholder="Cód" autocomplete="off">
-								<input type="text" name="name" class="btn-generic-small" placeholder="Nome" autocomplete="off">
-								<select name="color" class="btn-generic-small">
-									<option value="">Cor</option>
-									<% for(i in feedstockColors){ %>
-										<option value="<%= feedstockColors[i].shortcut %>"><%= feedstockColors[i].name %></option>
-									<% } %>
-								</select>
-								<input type="submit" class="btn-submit" value="Filtrar">
-							</form>
-
-							<!-- Feedstock  -->
-        				<% include ./feedstock/add %>
+							<fieldset class="fieldset-generic">
+	    						<legend>Filtrar Matérias-Prima</legend>
+								<form id="feedstock-filter-form">
+									<input type="hidden" name="location" value="productAddFeedstock">
+									<input type="text" name="feedstock_code" class="btn-generic-small" placeholder="Cód" autocomplete="off">
+									<input type="text" name="name" class="btn-generic-small" placeholder="Nome" autocomplete="off">
+									<select name="color" class="btn-generic-small">
+										<option value="">Cor</option>
+										<% for(i in feedstockColors){ %>
+											<option value="<%= feedstockColors[i].shortcut %>"><%= feedstockColors[i].name %></option>
+										<% } %>
+									</select>
+									<input type="submit" class="btn-submit" value="Filtrar">
+								</form>
+	  						</fieldset>
+	  						<br>
+	        				<% include ./feedstock/form/add %>
 							
 						</div>
 					</div>
