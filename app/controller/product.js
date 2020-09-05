@@ -298,6 +298,60 @@ const productController = {
 				console.log(err);
 				res.send({ msg: "Ocorreu um erro ao remover a matéria-prima." });
 			};
+		},
+		category: {
+			save: async (req, res) => {
+				if(!await userController.verifyAccess(req, res, ['adm','man','COR-GER'])){
+					return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+				};
+
+				try {
+					await Product.feedstock.remove(req.query.id);
+					res.send({ done: 'Matéria-prima excluída!' });
+				} catch (err) {
+					console.log(err);
+					res.send({ msg: "Ocorreu um erro ao remover a matéria-prima." });
+				};
+			},
+			delete: async (req, res) => {
+				if(!await userController.verifyAccess(req, res, ['adm','man','COR-GER'])){
+					return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+				};
+
+				try {
+					await Product.feedstock.remove(req.query.id);
+					res.send({ done: 'Matéria-prima excluída!' });
+				} catch (err) {
+					console.log(err);
+					res.send({ msg: "Ocorreu um erro ao remover a matéria-prima." });
+				};
+			},
+			add: async (req, res) => {
+				if(!await userController.verifyAccess(req, res, ['adm','man','COR-GER'])){
+					return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+				};
+
+				try {
+					await Product.feedstock.remove(req.query.id);
+					res.send({ done: 'Matéria-prima excluída!' });
+				} catch (err) {
+					console.log(err);
+					res.send({ msg: "Ocorreu um erro ao remover a matéria-prima." });
+				};
+			},
+			remove: async (req, res) => {
+				if(!await userController.verifyAccess(req, res, ['adm','man','COR-GER'])){
+					return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+				};
+
+				try {
+					await Product.feedstock.remove(req.query.id);
+					res.send({ done: 'Matéria-prima excluída!' });
+				} catch (err) {
+					console.log(err);
+					res.send({ msg: "Ocorreu um erro ao remover a matéria-prima." });
+				};
+			}
 		}
 	},
 	production: {

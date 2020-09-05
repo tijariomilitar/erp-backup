@@ -29,7 +29,7 @@ function renderAdminFeedstocks(feedstocks, pageSize, page){
 };
 
 function fillFeedstockSelect(feedstocks, select){
-	select.innerHTML = "<option value='' disabled selected>Matéria-prima</option>";
+	select.innerHTML = "<option value='' disabled selected>"+feedstocks.length +" encontrados</option>";
 	for(i in feedstocks){
 		select.innerHTML += "<option value='"+feedstocks[i].id+"'>"+feedstocks[i].code+" | "+feedstocks[i].name+" | "+feedstocks[i].color+" | "+feedstocks[i].uom+"</option>"
 	};

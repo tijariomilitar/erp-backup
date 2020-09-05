@@ -115,6 +115,11 @@ const Product = {
 					};
 				};
 			}
+		},
+		category: {
+			save: (select) => {
+				console.log(select);
+			}
 		}
 	}
 };
