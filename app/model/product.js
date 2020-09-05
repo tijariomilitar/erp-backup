@@ -106,6 +106,22 @@ Product.feedstock = {
 	removeByFeedstockId: async (id) => {
 		let query = "DELETE FROM cms_wt_erp.product_feedstock WHERE feedstock_id='"+id+"';";
 		return db(query);
+	},
+	category: {
+		save: async (product_feedstock_category) => {
+			let query = "INSERT INTO cms_wt_erp.product_feedstock_category (product_id, name) VALUES ('"
+				+product_feedstock_category.product_id+"', '"
+				+product_feedstock_category.name+"');";
+			return db(query);		
+		},
+		list: async (id) => {
+			let query = "SELECT * FROM cms_wt_erp.product_feedstock_category WHERE product_id='"+id+"';";
+			return db(query);
+		},
+		update: async (product_feedstock_category) => {
+			let query = "UPDATE cms_wt_erp.product_feedstock_category SET name='"+product_feedstock_category.name+"' WHERE id='"+product_feedstock_category.id+"';";
+			return db(query);
+		}
 	}
 };
 

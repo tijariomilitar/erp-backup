@@ -117,13 +117,42 @@ const Product = {
 			}
 		},
 		category: {
-			save: (select) => {
-				console.log(select);
+			save: (form) => {
+				$.ajax({
+					url: "/product/feedstock/category/save/",
+					method: "post",
+					data: $("#"+form).serialize(),
+					success: (response) => {
+						if(API.verifyResponse(response, "product-feedstock-category-create-form")){return};
+						alert(response.done);
+					}
+				});
+			},
+			list: (target) => {
+				$.ajax({
+					url: "/product/feedstock/category/list/"+document.getElementById("product-feedstock-category-"),
+					method: "get",
+					success: (response) => {
+						if(API.verifyResponse(response, "product-feedstock-add-form")){return};
+						// if(target.nodeName == "select"){
+
+						// };
+						console.log(document.getElementById("product-feedstock-add-form").nodeName);
+					}
+				});
 			}
 		}
 	}
 };
 
+document.getElementById("product-feedstock-category-create-form").addEventListener("submit", async (event) => {
+	event.preventDefault();
+	document.getElementById('ajax-loader').style.visibility = 'visible';
+	Product.feedstock.category.save("product-feedstock-category-create-form");
+	Product.feedstock.category.list('select', document.getElementById("product-feedstock-add-form").elements.namedItem("category_id"));
+	document.getElementById("product-feedstock-category-create-form").elements.namedItem("category_name").value = "";
+	document.getElementById('ajax-loader').style.visibility = 'hidden';
+});
 
 function productFeedstockList(product_id){
 	document.getElementById('ajax-loader').style.visibility = 'visible';

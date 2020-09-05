@@ -120,6 +120,8 @@ function showProduct(id, admin){
 				document.getElementById("product-feedstock-add-form").elements.namedItem('feedstock_id').disabled = false;
 				document.getElementById('product-feedstock-box').style.display = "none";
 
+				document.getElementById("product-feedstock-category-create-form").elements.namedItem('product_id').value = response.product[0].id;
+
 				html += "<td><a class='tbl-show-link nowrap' onclick='productAddImage("+response.product[0].id+")'>+ Img</a></td>";
 				html += `<td><a class="tbl-show-link nowrap" onclick="lib.displayDiv('product-feedstock-div')">+ M-P</a></td>`;
 				html += `<td><a class="tbl-show-link" onclick="\

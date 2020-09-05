@@ -305,9 +305,40 @@ const productController = {
 					return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
 				};
 
+				const category = {
+					id: req.body.category_id,
+					product_id: req.body.product_id,
+					name: req.body.category_name
+				};
+
+				if(!category.product_id){
+					return res.send({ msg: "Produto inválido!" });
+				};
+
+				if(!category.name || category.name.length < 3){
+					return res.send({ msg: "O nome da categoria é inválido!" });
+				};
+
 				try {
-					await Product.feedstock.remove(req.query.id);
-					res.send({ done: 'Matéria-prima excluída!' });
+					if(!category.id){
+						await Product.feedstock.category.save(category);
+					} else {
+						await Product.feedstock.category.update(category);
+					};
+					res.send({ done: 'Categoria cadastrada com sucesso!' });
+				} catch (err) {
+					console.log(err);
+					res.send({ msg: "Ocorreu um erro ao cadastrar a categoria da matéria-prima." });
+				};
+			},
+			list: async (req, res) => {
+				if(!await userController.verifyAccess(req, res, ['adm','man','COR-GER'])){
+					return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+				};
+
+				try {
+					await Product.feedstock.category.list(req.query.id);
+					res.send({ product_feedstock_categories });
 				} catch (err) {
 					console.log(err);
 					res.send({ msg: "Ocorreu um erro ao remover a matéria-prima." });
