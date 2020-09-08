@@ -712,7 +712,7 @@ const feedstockController = {
 
 				try {
 					var feedstocks = [];
-					const supplier_storage = await Feedstock.supplierStorageList(req.params.id);
+					const supplier_storage = await Feedstock.supplier.feedstock.storage.list(req.params.id);
 					for(i in supplier_storage){
 						var feedstock = await Feedstock.findById(supplier_storage[i].feedstock_id);
 						feedstocks.push(feedstock[0]);

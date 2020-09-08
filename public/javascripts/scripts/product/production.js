@@ -1,11 +1,13 @@
-var product_production_kart = [];
+Product.production = {
+	kart: []
+};
 
 // verify if kart is empty
 if(JSON.parse(localStorage.getItem("productProductionKart")) != null){
-	const parsedProductProductionKart = JSON.parse(localStorage.getItem("productProductionKart"));
-	product_production_kart = parsedProductProductionKart;
+	let kart = JSON.parse(localStorage.getItem("productProductionKart"));
+	Product.production.kart = kart;
 
-	renderProductProductionKart(product_production_kart);
+	renderProductProductionKart(Product.production.kart);
 };
 
 $(() => {
@@ -40,21 +42,21 @@ $(() => {
 			feedstocks: []
 		};
 
-		for(i in product_production_kart){
-			if(product_production_kart[i].id == product.id){
+		for(i in Product.production.kart){
+			if(Product.production.kart[i].id == product.id){
 				document.getElementById('product-production-kart-submit').disabled = false;
 				return alert("Você já incluiu este produto na lista de produção.");
 			};
 		};
 
-		product_production_kart.push(product);
+		Product.production.kart.push(product);
 
-		product_production_kart.sort((a, b) => {
+		Product.production.kart.sort((a, b) => {
 		  return a.code - b.code;
 		});
 
-		updateProductProductionLocalStorage(product_production_kart);
-		renderProductProductionKart(product_production_kart);
+		updateProductProductionLocalStorage(Product.production.kart);
+		renderProductProductionKart(Product.production.kart);
 
 		document.getElementById("product-production-simulation-box").style.display = "none";
 		document.getElementById("product-production-form").style.display = "none";
@@ -74,7 +76,7 @@ $(() => {
 			return document.getElementById("product-production-simulation").elements.namedItem("submit").disabled = false;
 		};
 
-		if(!product_production_kart.length){
+		if(!Product.production.kart.length){
 			alert("É necessário selecionar algum produto para solicitar produção.");
 			return document.getElementById("product-production-simulation").elements.namedItem("submit").disabled = false;
 		};
@@ -85,7 +87,7 @@ $(() => {
 			method: "post",
 			data: {
 				storage_id: storage_id,
-				products: JSON.stringify(product_production_kart)
+				products: JSON.stringify(Product.production.kart)
 			},
 			success: (response) => {
 				if(API.verifyResponse(response, "product-production-simulation")){return};
@@ -95,8 +97,6 @@ $(() => {
 					return a.code - b.code;
 				});
 
-				console.log(response);
-				
 				var html = "";
 				html += "<tr>";
 				html += "<td>Cód</td>";
@@ -144,7 +144,7 @@ $(() => {
 			return document.getElementById('product-production-form').elements.namedItem('submit').disabled = false;
 		};
 
-		if(!product_production_kart.length){
+		if(!Product.production.kart.length){
 			alert("É necessário selecionar algum produto para solicitar produção.");
 			return document.getElementById('product-production-form').elements.namedItem('submit').disabled = false;
 		};
@@ -156,7 +156,7 @@ $(() => {
 			method: "post",
 			data: {
 				storage_id: storage_id,
-				products: JSON.stringify(product_production_kart)
+				products: JSON.stringify(Product.production.kart)
 			},
 			success: (response) => {
 				// if(API.verifyResponse(response, "product-production-form")){return};
@@ -167,13 +167,13 @@ $(() => {
 					return a.code - b.code;
 				});
 
-				// product_production_kart = [];
+				// Product.production.kart = [];
 
 				// document.getElementById("product-production-simulation-box").style.display = "block";
 				// document.getElementById("product-production-simulation-tbl").innerHTML = "";
 
-				// updateProductProductionLocalStorage(product_production_kart);
-				// renderProductProductionKart(product_production_kart);
+				// updateProductProductionLocalStorage(Product.production.kart);
+				// renderProductProductionKart(Product.production.kart);
 			
 				// document.getElementById('product-production-form').elements.namedItem("submit").disabled = false;
 				
@@ -209,16 +209,16 @@ function renderProductProductionKart(products){
 
 function removeProductFromProductionKart(id){
 	var kart_backup = [];
-	for(i in product_production_kart){
-		if(product_production_kart[i].id != id){
-			kart_backup.push(product_production_kart[i]);
+	for(i in Product.production.kart){
+		if(Product.production.kart[i].id != id){
+			kart_backup.push(Product.production.kart[i]);
 		};
 	}
 
-	product_production_kart = kart_backup;
+	Product.production.kart = kart_backup;
 
-	updateProductProductionLocalStorage(product_production_kart);
-	renderProductProductionKart(product_production_kart);
+	updateProductProductionLocalStorage(Product.production.kart);
+	renderProductProductionKart(Product.production.kart);
 	document.getElementById("product-production-simulation-box").style.display = "none";
 	document.getElementById("product-production-form").style.display = "none";
 };

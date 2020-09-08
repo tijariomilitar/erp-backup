@@ -61,7 +61,7 @@ $(function(){
 						} else if (location==="productAddFeedstock"){
 							fillFeedstockSelect(response.feedstocks, document.getElementById("product-feedstock-add-form").elements.namedItem('feedstock_id'));
 						} else if (location==="feedstockSupplierAddFeedstock"){
-							fillFeedstockSelect(response.feedstocks, document.getElementById("feedstock-supplier-addFeedstock-form").elements.namedItem('feedstock_id'));
+							fillFeedstockSelect(response.feedstocks, document.getElementById("feedstock-supplier-feedstock-add-form").elements.namedItem('feedstock_id'));
 						} else if (location==="feedstockRequest"){
 							fillFeedstockSelect(response.feedstocks, document.getElementById("feedstock-request-kart-form").elements.namedItem('feedstock_id'));
 						} else if (location==="feedstockRegress"){

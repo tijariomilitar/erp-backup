@@ -99,6 +99,18 @@ select:required:invalid {
 	border: 1px solid #8f9f94;
 }
 
+.btn-generic-info {
+	font-size: 13px;
+	width: 300px;
+	height: 30px;
+	margin: 3px;
+	font-family: "HelveticaNeue-Light";
+	text-align: center;
+	background-color: #fff;
+	border-radius: 5px;
+	border: 1px solid #8f9f94;
+}
+
 .input-search {
 	font-size: 12px;
 	width: 30%;

@@ -56,48 +56,46 @@
 					</div>
 				</div>
 				
-				<div class="box-1" id="product-show-box" style="display:none;">
-					<table class="tbl-info width-fill" id="product-show-tbl">
-						<tr>
-							<td>Cód</td>
-							<td>Nome</td>
-							<td>Tamanho</td>
-							<td>Cor</td>
-						</tr>
-						<tbody id="product-show-tbody"></tbody>
-					</table>
-					<div class="box-1" id="product-feedstock-div" style="display:none">
-						<div id="product-addFeedstock-div">
-							<!-- Feedstock filter form -->
-							<fieldset class="fieldset-generic">
-	    						<legend>Filtrar Matérias-Prima</legend>
-								<form id="feedstock-filter-form">
-									<input type="hidden" name="location" value="productAddFeedstock">
-									<input type="text" name="feedstock_code" class="btn-generic-small" placeholder="Cód" autocomplete="off">
-									<input type="text" name="name" class="btn-generic-small" placeholder="Nome" autocomplete="off">
-									<select name="color" class="btn-generic-small">
-										<option value="">Cor</option>
-										<% for(i in feedstockColors){ %>
-											<option value="<%= feedstockColors[i].shortcut %>"><%= feedstockColors[i].name %></option>
-										<% } %>
-									</select>
-									<input type="submit" class="btn-submit" value="Filtrar">
-								</form>
-	  						</fieldset>
-	  						<br>
-	  						
-	        				<% include ./feedstock/form/category-add %>
-	        				<% include ./feedstock/form/add %>
-							
+				<div class="box-1" id="product-manage-show-box" style="display:none;">
+					<table class="tbl-info width-fill" id="product-manage-show-table"></table>
+					
+					<div class="box-1" id="product-manage-image-box">
+						<div class="box-1" id="product-manage-image"></div>
+						<div name="carousel-navigation">
+							<button name="carousel-previous" autocomplete="off" disabled>&lsaquo;&lsaquo;</button>
+		                    <span name="carousel-page"></span>
+		                    <button name="carousel-next" autocomplete="off" disabled>&rsaquo;&rsaquo;</button>
 						</div>
+					</div>
+				</div>
+
+				<div class="box-1" id="product-feedstock-div" style="display:none">
+					<div id="product-addFeedstock-div">
+						<!-- Feedstock filter form -->
+						<form id="feedstock-filter-form" class="box-1">
+							<fieldset class="fieldset-generic">
+    							<legend>Filtrar Matérias-Prima</legend>
+								<input type="hidden" name="location" value="productAddFeedstock">
+								<input type="text" name="feedstock_code" class="btn-generic-small" placeholder="Cód" autocomplete="off">
+								<input type="text" name="name" class="btn-generic-small" placeholder="Nome" autocomplete="off">
+								<select name="color" class="btn-generic-small">
+									<option value="">Cor</option>
+									<% for(i in feedstockColors){ %>
+										<option value="<%= feedstockColors[i].shortcut %>"><%= feedstockColors[i].name %></option>
+									<% } %>
+								</select>
+								<input type="submit" class="btn-submit" value="Filtrar">
+  							</fieldset>
+						</form>
+  						<br>
+  						
+        				<% include ./feedstock/form/category-add %>
+        				<% include ./feedstock/form/add %>
+						
 					</div>
 					<div id="product-feedstock-box" class="box-1" style="display:none">
 						<table id="product-feedstock-tbl" class="tbl-info width-fill"></table>
 					</div>
-					<div class="box-1" id="product-image-show"></div>
-					<button id="imagePrevious" autocomplete="off" disabled>&lsaquo;&lsaquo;</button>
-                    <span id="imagePageNumber"></span>
-                    <button id="imageNext" autocomplete="off" disabled>&rsaquo;&rsaquo;</button>
 				</div>
 
 				<div id="department-show-box" class="box-2" style="display:none">
@@ -122,8 +120,7 @@
 	<footer>
         <% include ./../partials/footer %>
         <% include ./partial %>
+        <script src="/javascripts/scripts/product/manage.js"></script>
         <script src="/javascripts/scripts/product/feedstock.js"></script>
-		<script src="/javascripts/scripts/feedstock/main.js"></script>
-		<script src="/javascripts/scripts/feedstock/tables.js"></script>
 	</footer>
 </html>

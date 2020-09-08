@@ -1,3 +1,98 @@
+Product.feedstock = {
+	edit: (id, feedstock_id, feedstock_uom, feedstock_amount, feedstock_measure, product_id) => {
+		document.getElementById('ajax-loader').style.visibility = 'visible';
+
+		$.ajax({
+			url: '/feedstock/id/'+feedstock_id,
+			method: 'get',
+			success: function(feedstock){
+				document.getElementById("product-feedstock-div").style.display = "block";
+
+				document.getElementById("product-feedstock-add-form").elements.namedItem("id").value = id;
+				document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_id").innerHTML = "<option value="+feedstock[0].id+">"+feedstock[0].code+" | "+feedstock[0].name+" | "+feedstock[0].color+" | "+feedstock[0].uom+"</option>";
+				document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_id").disabled = true;
+				if(feedstock_uom == "un"){
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").value = feedstock_amount;
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").disabled = false;
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").disabled = true;
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").value = "";
+				} else if(feedstock_uom == "cm"){
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").value = feedstock_amount;
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").disabled = false;
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").value = feedstock_measure;
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").disabled = false;
+				};
+
+				document.getElementById('ajax-loader').style.visibility = 'hidden';
+			}
+		});
+	},
+	// onchange="Product.feedstock.uom.inputs(this)"
+	uom: {
+		inputs: (uom) => {
+			if(uom){
+				uom = uom.options[uom.selectedIndex].text.split(' | ');
+				if(uom[3] == "un"){
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").disabled = false;
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").disabled = true;
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").value = "";
+				} else if(uom[3] == "cm"){
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").disabled = false;
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").disabled = false;
+				};
+			} else {
+				if(document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_uom").value == "un"){
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").disabled = true;
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").value = "";
+				} else if(document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_uom").value == "cm"){
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").disabled = false;
+					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").disabled = false;
+				};
+			};
+		}
+	},
+	category: {
+		save: (form) => {
+			$.ajax({
+				url: "/product/feedstock/category/save/",
+				method: "post",
+				data: $("#"+form).serialize(),
+				success: (response) => {
+					if(API.verifyResponse(response, "product-feedstock-category-create-form")){return};
+					alert(response.done);
+				}
+			});
+		},
+		list: (target) => {
+			$.ajax({
+				url: "/product/feedstock/category/list/"+target.elements.namedItem("product_id").value,
+				method: "get",
+				success: (response) => {
+					if(API.verifyResponse(response, "product-feedstock-add-form")){return};
+					
+					if(target.nodeName == "SELECT"){
+						console.log(target.nodeName);
+					};
+					
+					console.log('target');
+					console.log(target);
+
+					console.log(document.getElementById("product-feedstock-add-form").nodeName);
+				}
+			});
+		}
+	}
+};
+
+document.getElementById("product-feedstock-category-create-form").addEventListener("submit", async (event) => {
+	event.preventDefault();
+	document.getElementById('ajax-loader').style.visibility = 'visible';
+	Product.feedstock.category.save("product-feedstock-category-create-form");
+	Product.feedstock.category.list(document.getElementById("product-feedstock-add-form").elements.namedItem("category_id"));
+	document.getElementById("product-feedstock-category-create-form").elements.namedItem("category_name").value = "";
+	document.getElementById('ajax-loader').style.visibility = 'hidden';
+});
+
 $(() => {
 	$("#product-feedstock-add-form").on('submit', (event) => {
 		event.preventDefault();
@@ -59,99 +154,6 @@ $(() => {
 			}
 		});
 	});
-});
-
-
-const Product = {
-	feedstock: {
-		edit: (id, feedstock_id, feedstock_uom, feedstock_amount, feedstock_measure, product_id) => {
-			document.getElementById('ajax-loader').style.visibility = 'visible';
-			
-			$.ajax({
-				url: '/feedstock/id/'+feedstock_id,
-				method: 'get',
-				success: function(feedstock){
-					document.getElementById("product-feedstock-div").style.display = "block";
-
-					document.getElementById("product-feedstock-add-form").elements.namedItem("id").value = id;
-					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_id").innerHTML = "<option value="+feedstock[0].id+">"+feedstock[0].code+" | "+feedstock[0].name+" | "+feedstock[0].color+" | "+feedstock[0].uom+"</option>";
-					document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_id").disabled = true;
-					if(feedstock_uom == "un"){
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").value = feedstock_amount;
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").disabled = false;
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").disabled = true;
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").value = "";
-					} else if(feedstock_uom == "cm"){
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").value = feedstock_amount;
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").disabled = false;
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").value = feedstock_measure;
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").disabled = false;
-					};
-
-					document.getElementById('ajax-loader').style.visibility = 'hidden';
-				}
-			});
-		},
-		// onchange="Product.feedstock.uom.inputs(this)"
-		uom: {
-			inputs: (uom) => {
-				if(uom){
-					uom = uom.options[uom.selectedIndex].text.split(' | ');
-					if(uom[3] == "un"){
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").disabled = false;
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").disabled = true;
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").value = "";
-					} else if(uom[3] == "cm"){
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").disabled = false;
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").disabled = false;
-					};
-				} else {
-					if(document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_uom").value == "un"){
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").disabled = true;
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").value = "";
-					} else if(document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_uom").value == "cm"){
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_amount").disabled = false;
-						document.getElementById("product-feedstock-add-form").elements.namedItem("feedstock_measure").disabled = false;
-					};
-				};
-			}
-		},
-		category: {
-			save: (form) => {
-				$.ajax({
-					url: "/product/feedstock/category/save/",
-					method: "post",
-					data: $("#"+form).serialize(),
-					success: (response) => {
-						if(API.verifyResponse(response, "product-feedstock-category-create-form")){return};
-						alert(response.done);
-					}
-				});
-			},
-			list: (target) => {
-				$.ajax({
-					url: "/product/feedstock/category/list/"+document.getElementById("product-feedstock-category-"),
-					method: "get",
-					success: (response) => {
-						if(API.verifyResponse(response, "product-feedstock-add-form")){return};
-						// if(target.nodeName == "select"){
-
-						// };
-						console.log(document.getElementById("product-feedstock-add-form").nodeName);
-					}
-				});
-			}
-		}
-	}
-};
-
-document.getElementById("product-feedstock-category-create-form").addEventListener("submit", async (event) => {
-	event.preventDefault();
-	document.getElementById('ajax-loader').style.visibility = 'visible';
-	Product.feedstock.category.save("product-feedstock-category-create-form");
-	Product.feedstock.category.list('select', document.getElementById("product-feedstock-add-form").elements.namedItem("category_id"));
-	document.getElementById("product-feedstock-category-create-form").elements.namedItem("category_name").value = "";
-	document.getElementById('ajax-loader').style.visibility = 'hidden';
 });
 
 function productFeedstockList(product_id){
