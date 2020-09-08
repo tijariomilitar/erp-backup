@@ -1,4 +1,7 @@
 Product.feedstock = {
+	manage: (product_id) => {
+		
+	},
 	edit: (id, feedstock_id, feedstock_uom, feedstock_amount, feedstock_measure, product_id) => {
 		document.getElementById('ajax-loader').style.visibility = 'visible';
 

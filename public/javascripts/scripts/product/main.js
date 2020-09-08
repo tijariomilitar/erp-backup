@@ -7,8 +7,7 @@ const Product = {
 			success: (response) => {
 				if(API.verifyResponse(response)){return};
 
-
-
+				
 				document.getElementById('ajax-loader').style.visibility = 'hidden';
 			}
 		});

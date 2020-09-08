@@ -1,5 +1,6 @@
 Product.image = {
 	add: (product_id) => {
+		console.log('ok');
 		let image_url = prompt("Preencha com a URL da imagem");
 		if(image_url){
 			if(image_url.length < 7){
