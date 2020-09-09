@@ -75,6 +75,10 @@ select:required:invalid {
 	border: 1px solid #8f9f94;
 }
 
+.btn-generic-small:hover {
+	background-color: #f0f0f0;
+}
+
 .btn-generic-medium {
 	font-size: 12px;
 	width:150px;
@@ -85,6 +89,10 @@ select:required:invalid {
 	background-color: #fff;
 	border-radius: 5px;
 	border: 1px solid #8f9f94;
+}
+
+.btn-generic-medium:hover {
+	background-color: #f0f0f0;
 }
 
 .btn-generic-big {
@@ -99,6 +107,10 @@ select:required:invalid {
 	border: 1px solid #8f9f94;
 }
 
+.btn-generic-big:hover {
+	background-color: #f0f0f0;
+}
+
 .btn-generic-info {
 	font-size: 13px;
 	width: 300px;
@@ -109,6 +121,10 @@ select:required:invalid {
 	background-color: #fff;
 	border-radius: 5px;
 	border: 1px solid #8f9f94;
+}
+
+.btn-generic-info:hover {
+	background-color: #f0f0f0;
 }
 
 .input-search {
@@ -123,6 +139,10 @@ select:required:invalid {
 	border: 1px solid #8f9f94;
 }
 
+.input-search:hover {
+	background-color: #f0f0f0;
+}
+
 .select-search-color {
 	font-size: 12px;
 	width: 25%;
@@ -133,6 +153,10 @@ select:required:invalid {
 	background-color: #fff;
 	border-radius: 2px;
 	border: 1px solid #8f9f94;
+}
+
+.select-search-color:hover {
+	background-color: #f0f0f0;
 }
 
 .btn-search-submit {

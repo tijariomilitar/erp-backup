@@ -2,6 +2,60 @@ Product.feedstock = {
 	manage: (product_id) => {
 		
 	},
+	list: (product_id) => {
+		document.getElementById('ajax-loader').style.visibility = 'visible';
+
+		document.getElementById("product-feedstock-box").style.display = "block";
+		
+		$.ajax({
+			url: "/product/feedstock/list/id/"+product_id,
+			method: "get",
+			success: (response) => {
+				if(API.verifyResponse(response, "product-feedstock-add-form")){return};
+				
+				document.getElementById('ajax-loader').style.visibility = 'hidden';
+
+				if(response.product.feedstocks.length){
+					var html = "";
+
+					html += "<tr>";
+					html += "<td>Cód</td>";
+					html += "<td>Nome</td>";
+					html += "<td>Cor</td>";
+					html += "<td>Qtd</td>";
+					html += "<td>Cm</td>";
+					html += "</tr>";
+
+					response.product.feedstocks.sort((a, b) => {
+					  return a.code - b.code;
+					});
+
+					for(i in response.product.feedstocks){
+						html += "<tr>";
+						html += "<td class='nowrap'>"+response.product.feedstocks[i].code+"</td>";
+						html += "<td>"+response.product.feedstocks[i].name+"</td>";
+						html += "<td>"+response.product.feedstocks[i].color+"</td>";
+						if(response.product.feedstocks[i].uom == 'un'){
+							html += "<td>"+response.product.feedstocks[i].amount+"un</td>";
+							html += "<td></td>";
+						} else if(response.product.feedstocks[i].uom == 'cm'){
+							html += "<td>"+response.product.feedstocks[i].amount+"un</td>";
+							html += "<td>"+response.product.feedstocks[i].measure+"cm</td>";
+						};
+						html += "<td><a class='tbl-show-link nowrap' onclick='Product.feedstock.edit("+response.product.feedstocks[i].id+", "+response.product.feedstocks[i].feedstock_id+", `"+response.product.feedstocks[i].uom+"`, "+response.product.feedstocks[i].amount+", "+response.product.feedstocks[i].measure+", "+response.product.feedstocks[i].product_id+")'>Edit</a></td>";
+						html += "<td><a class='tbl-show-link nowrap' onclick='removeProductFeedstock("+response.product.feedstocks[i].id+", "+response.product.feedstocks[i].product_id+")'>Rem</a></td>";
+						html += "</tr>";
+					};
+
+					document.getElementById("product-feedstock-table").innerHTML = html;
+				} else {
+					document.getElementById("product-feedstock-table").innerHTML = "Sem registros!";
+				};
+
+				document.getElementById('ajax-loader').style.visibility = 'hidden';
+			}
+		});
+	},
 	edit: (id, feedstock_id, feedstock_uom, feedstock_amount, feedstock_measure, product_id) => {
 		document.getElementById('ajax-loader').style.visibility = 'visible';
 
@@ -29,6 +83,22 @@ Product.feedstock = {
 				document.getElementById('ajax-loader').style.visibility = 'hidden';
 			}
 		});
+	},
+	form: {
+		display: (product_id) => {
+			if(document.getElementById("product-feedstock-add-box").style.display == "none"){
+				document.getElementById("product-feedstock-add-box").style.display = "block";
+
+
+				Product.feedstock.category.list(product_id);
+
+
+
+				// document.getElementById("product-feedstock-add-form").elements.namedItem("category_id").innerHTML = html;
+			} else {
+				document.getElementById("product-feedstock-add-box").style.display == "none";
+			};
+		}
 	},
 	// onchange="Product.feedstock.uom.inputs(this)"
 	uom: {
@@ -66,21 +136,14 @@ Product.feedstock = {
 				}
 			});
 		},
-		list: (target) => {
+		list: (product_id) => {
 			$.ajax({
-				url: "/product/feedstock/category/list/"+target.elements.namedItem("product_id").value,
+				url: "/product/feedstock/category/list/"+product_id,
 				method: "get",
 				success: (response) => {
 					if(API.verifyResponse(response, "product-feedstock-add-form")){return};
 					
-					if(target.nodeName == "SELECT"){
-						console.log(target.nodeName);
-					};
-					
-					console.log('target');
-					console.log(target);
-
-					console.log(document.getElementById("product-feedstock-add-form").nodeName);
+					console.log(response);
 				}
 			});
 		}
@@ -158,61 +221,6 @@ $(() => {
 		});
 	});
 });
-
-function productFeedstockList(product_id){
-	document.getElementById('ajax-loader').style.visibility = 'visible';
-
-	document.getElementById("product-feedstock-box").style.display = "block";
-	
-	$.ajax({
-		url: "/product/feedstock/list/id/"+product_id,
-		method: "get",
-		success: (response) => {
-			if(API.verifyResponse(response, "product-feedstock-add-form")){return};
-			
-			document.getElementById('ajax-loader').style.visibility = 'hidden';
-
-			if(response.product.feedstocks.length){
-				var html = "";
-
-				html += "<tr>";
-				html += "<td>Cód</td>";
-				html += "<td>Nome</td>";
-				html += "<td>Cor</td>";
-				html += "<td>Qtd</td>";
-				html += "<td>Cm</td>";
-				html += "</tr>";
-
-				response.product.feedstocks.sort((a, b) => {
-				  return a.code - b.code;
-				});
-
-				for(i in response.product.feedstocks){
-					html += "<tr>";
-					html += "<td class='nowrap'>"+response.product.feedstocks[i].code+"</td>";
-					html += "<td>"+response.product.feedstocks[i].name+"</td>";
-					html += "<td>"+response.product.feedstocks[i].color+"</td>";
-					if(response.product.feedstocks[i].uom == 'un'){
-						html += "<td>"+response.product.feedstocks[i].amount+"un</td>";
-						html += "<td></td>";
-					} else if(response.product.feedstocks[i].uom == 'cm'){
-						html += "<td>"+response.product.feedstocks[i].amount+"un</td>";
-						html += "<td>"+response.product.feedstocks[i].measure+"cm</td>";
-					};
-					html += "<td><a class='tbl-show-link nowrap' onclick='Product.feedstock.edit("+response.product.feedstocks[i].id+", "+response.product.feedstocks[i].feedstock_id+", `"+response.product.feedstocks[i].uom+"`, "+response.product.feedstocks[i].amount+", "+response.product.feedstocks[i].measure+", "+response.product.feedstocks[i].product_id+")'>Edit</a></td>";
-					html += "<td><a class='tbl-show-link nowrap' onclick='removeProductFeedstock("+response.product.feedstocks[i].id+", "+response.product.feedstocks[i].product_id+")'>Rem</a></td>";
-					html += "</tr>";
-				};
-
-				document.getElementById("product-feedstock-tbl").innerHTML = html;
-			} else {
-				document.getElementById("product-feedstock-tbl").innerHTML = "Sem registros!";
-			};
-
-			document.getElementById('ajax-loader').style.visibility = 'hidden';
-		}
-	});
-};
 
 function productFeedstockClear(tbl){
 	document.getElementById(tbl).innerHTML = "Sem registros";

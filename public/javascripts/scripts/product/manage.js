@@ -56,8 +56,8 @@ Product.manage = {
 		fill: (product) => {
 			var html = "";
 			html += "<button class='btn-generic-medium' onclick='Product.image.add("+product.id+")'>Adicionar Imagem</button>";
-			html += "<button class='btn-generic-medium' onclick='Product.feedstock.manage("+product.id+")'>Adicionar Matéria-Prima</button>";
-			html += "<button class='btn-generic-medium' onclick=''>Listar Matérias-Prima</button>";
+			html += "<button class='btn-generic-medium' onclick='Product.feedstock.form.display("+product.id+")'>Adicionar Matéria-Prima</button>";
+			html += "<button class='btn-generic-medium' onclick='Product.feedstock.list("+product.id+")'>Listar Matérias-Prima</button>";
 
 			document.getElementById("product-manage-menu-box").innerHTML = html;
 		}

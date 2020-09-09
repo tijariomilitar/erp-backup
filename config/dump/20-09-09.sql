@@ -1,3 +1,5 @@
+-- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
+--
 -- Host: localhost    Database: cms_wt_erp
 -- ------------------------------------------------------
 -- Server version	8.0.19
@@ -733,6 +735,31 @@ INSERT INTO `product_feedstock` VALUES (1,8,28,'cm',1,17.00,NULL),(2,8,28,'cm',2
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product_feedstock_category`
+--
+
+DROP TABLE IF EXISTS `product_feedstock_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_feedstock_category` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `product_id` int NOT NULL,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_feedstock_category`
+--
+
+LOCK TABLES `product_feedstock_category` WRITE;
+/*!40000 ALTER TABLE `product_feedstock_category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product_feedstock_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `product_image`
 --
 
@@ -961,4 +988,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-05  7:20:10
+-- Dump completed on 2020-09-09  0:54:22

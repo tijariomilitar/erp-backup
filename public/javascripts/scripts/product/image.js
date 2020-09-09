@@ -1,6 +1,5 @@
 Product.image = {
 	add: (product_id) => {
-		console.log('ok');
 		let image_url = prompt("Preencha com a URL da imagem");
 		if(image_url){
 			if(image_url.length < 7){
@@ -18,12 +17,11 @@ Product.image = {
 					success: (response) => {
 						if(API.verifyResponse(response)){return};
 
-						document.getElementById('ajax-loader').style.visibility = 'hidden';
-
 						Product.show(product_id, true);
 						alert(response.done);
 					}
 				});
+				document.getElementById('ajax-loader').style.visibility = 'hidden';
 			}).bind('error', () =>  {
 				return alert('URL inválida!');
 			});

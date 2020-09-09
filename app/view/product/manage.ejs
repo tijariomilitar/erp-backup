@@ -60,20 +60,8 @@
 					<button class="btn-generic-big" onclick="lib.displayDiv('product-manage-menu-box')">MENU</button>
 					<div class="box-1" id="product-manage-menu-box" style="display:none"></div>
 					<table class="tbl-info width-fill" id="product-manage-info-table"></table>
-					
-					<div class="box-1" id="product-manage-image-box">
-						<div class="box-1" id="product-manage-image"></div>
-						<div name="carousel-navigation">
-							<button name="carousel-previous" autocomplete="off" disabled>&lsaquo;&lsaquo;</button>
-		                    <span name="carousel-page"></span>
-		                    <button name="carousel-next" autocomplete="off" disabled>&rsaquo;&rsaquo;</button>
-						</div>
-					</div>
-				</div>
 
-				<div class="box-1" id="product-feedstock-div" style="display:none">
-					<div id="product-addFeedstock-div">
-						<!-- Feedstock filter form -->
+					<div id="product-feedstock-add-box" style="display:none">
 						<form id="feedstock-filter-form" class="box-1">
 							<fieldset class="fieldset-generic">
     							<legend>Filtrar Matérias-Prima</legend>
@@ -90,13 +78,21 @@
   							</fieldset>
 						</form>
   						<br>
-  						
         				<% include ./feedstock/form/category-add %>
         				<% include ./feedstock/form/add %>
-						
 					</div>
-					<div id="product-feedstock-box" class="box-1" style="display:none">
-						<table id="product-feedstock-tbl" class="tbl-info width-fill"></table>
+
+					<div class="box-1" id="product-feedstock-box" style="display:none">
+						<table class="tbl-info box-1" id="product-feedstock-table"></table>
+					</div>
+					
+					<div class="box-1" id="product-manage-image-box">
+						<div class="box-1" id="product-manage-image"></div>
+						<div name="carousel-navigation">
+							<button name="carousel-previous" autocomplete="off" disabled>&lsaquo;&lsaquo;</button>
+		                    <span name="carousel-page"></span>
+		                    <button name="carousel-next" autocomplete="off" disabled>&rsaquo;&rsaquo;</button>
+						</div>
 					</div>
 				</div>
 
