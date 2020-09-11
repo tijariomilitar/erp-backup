@@ -6,7 +6,6 @@ const API = {
 		};
 		if(res.msg){
 			alert(res.msg);
-			console.log(form);
 			if(form){
 				document.getElementById(form).elements.namedItem("submit").disabled = false;
 			};

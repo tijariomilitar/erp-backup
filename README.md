@@ -74,6 +74,8 @@ Recebe a solicitação do Controller 'view/product/index' (view)
 
 Novas funcionalidades a implementar - 
 
+Finish product manage functions
+
 Create Production requests
 	Create production products amount controller by status
 

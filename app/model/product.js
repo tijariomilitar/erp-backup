@@ -114,8 +114,8 @@ Product.feedstock = {
 				+product_feedstock_category.name+"');";
 			return db(query);		
 		},
-		list: async (id) => {
-			let query = "SELECT * FROM cms_wt_erp.product_feedstock_category WHERE product_id='"+id+"';";
+		list: async (product_id) => {
+			let query = "SELECT * FROM cms_wt_erp.product_feedstock_category WHERE product_id='"+product_id+"';";
 			return db(query);
 		},
 		update: async (product_feedstock_category) => {

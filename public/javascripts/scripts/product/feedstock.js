@@ -47,6 +47,7 @@ Product.feedstock = {
 						html += "</tr>";
 					};
 
+					document.getElementById("product-feedstock-box").style.display = "block";
 					document.getElementById("product-feedstock-table").innerHTML = html;
 				} else {
 					document.getElementById("product-feedstock-table").innerHTML = "Sem registros!";
@@ -85,18 +86,11 @@ Product.feedstock = {
 		});
 	},
 	form: {
-		display: (product_id) => {
-			if(document.getElementById("product-feedstock-add-box").style.display == "none"){
-				document.getElementById("product-feedstock-add-box").style.display = "block";
-
-
-				Product.feedstock.category.list(product_id);
-
-
-
-				// document.getElementById("product-feedstock-add-form").elements.namedItem("category_id").innerHTML = html;
-			} else {
-				document.getElementById("product-feedstock-add-box").style.display == "none";
+		display: (product_id, form) => {
+			lib.displayDiv("product-feedstock-add-box");
+			if(document.getElementById("product-feedstock-add-box").style.display == "block"){
+				document.getElementById("product-feedstock-category-create-form").elements.namedItem("product_id").value = product_id;
+				Product.feedstock.category.list(product_id, form);
 			};
 		}
 	},
@@ -132,18 +126,27 @@ Product.feedstock = {
 				data: $("#"+form).serialize(),
 				success: (response) => {
 					if(API.verifyResponse(response, "product-feedstock-category-create-form")){return};
+					
+					Product.feedstock.category.list(document.getElementById("product-feedstock-category-create-form").elements.namedItem("product_id").value, "product-feedstock-add-form");
+										
 					alert(response.done);
 				}
 			});
 		},
-		list: (product_id) => {
+		list: (product_id, form) => {
 			$.ajax({
 				url: "/product/feedstock/category/list/"+product_id,
 				method: "get",
 				success: (response) => {
-					if(API.verifyResponse(response, "product-feedstock-add-form")){return};
-					
-					console.log(response);
+					if(API.verifyResponse(response, form)){return};
+
+					if(document.getElementById(form).elements.namedItem("category_id").nodeName == "SELECT"){
+						var html = "<option value=''>S/ categoria</option>";
+						for(i in response.product_feedstock_categories){
+							html += "<option value='"+response.product_feedstock_categories[i].id+"'>"+response.product_feedstock_categories[i].name+"</option>";
+						};
+						document.getElementById(form).elements.namedItem("category_id").innerHTML = html;
+					};
 				}
 			});
 		}
@@ -154,7 +157,7 @@ document.getElementById("product-feedstock-category-create-form").addEventListen
 	event.preventDefault();
 	document.getElementById('ajax-loader').style.visibility = 'visible';
 	Product.feedstock.category.save("product-feedstock-category-create-form");
-	Product.feedstock.category.list(document.getElementById("product-feedstock-add-form").elements.namedItem("category_id"));
+	
 	document.getElementById("product-feedstock-category-create-form").elements.namedItem("category_name").value = "";
 	document.getElementById('ajax-loader').style.visibility = 'hidden';
 });

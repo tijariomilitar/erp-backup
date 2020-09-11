@@ -40,6 +40,10 @@ Product.manage = {
 			success: (response) => {
 				if(API.verifyResponse(response)){return};
 
+				document.getElementById("product-manage-show-box").style.display = "none";
+				document.getElementById("product-feedstock-add-box").style.display = "none";
+				document.getElementById("product-feedstock-box").style.display = "none";
+
 				document.getElementById("product-manage-show-box").style.display = "block";
 
 				Product.manage.menu.fill(response.product[0]);
@@ -56,7 +60,7 @@ Product.manage = {
 		fill: (product) => {
 			var html = "";
 			html += "<button class='btn-generic-medium' onclick='Product.image.add("+product.id+")'>Adicionar Imagem</button>";
-			html += "<button class='btn-generic-medium' onclick='Product.feedstock.form.display("+product.id+")'>Adicionar Matéria-Prima</button>";
+			html += "<button class='btn-generic-medium' onclick='Product.feedstock.form.display("+product.id+", `product-feedstock-add-form`)'>Adicionar Matéria-Prima</button>";
 			html += "<button class='btn-generic-medium' onclick='Product.feedstock.list("+product.id+")'>Listar Matérias-Prima</button>";
 
 			document.getElementById("product-manage-menu-box").innerHTML = html;
@@ -69,6 +73,8 @@ Product.manage = {
 			html += "<td>Nome</td>";
 			html += "<td>Tamanho</td>";
 			html += "<td>Cor</td>";
+			html += "<td></td>";
+			html += "<td></td>";
 			html += "</tr>";
 			for (let i = page * pageSize; i < products.length && i < (page + 1) * pageSize;i++){
 				html += "<tr>";
@@ -115,7 +121,7 @@ document.getElementById("product-create-form").addEventListener("submit", (event
 
 	document.getElementById("product-filter-form").elements.namedItem("name").value = document.getElementById("product-create-form").elements.namedItem("name").value;
 	$("#product-filter-form").submit();
-
+	
 	document.getElementById("product-create-form").elements.namedItem("id").value = "";
 	document.getElementById("product-create-form").elements.namedItem("code").value = "";
 	document.getElementById("product-create-form").elements.namedItem("name").value = "";

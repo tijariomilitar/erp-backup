@@ -337,7 +337,7 @@ const productController = {
 				};
 
 				try {
-					let product_feedstock_categories = await Product.feedstock.category.list(req.query.id);
+					let product_feedstock_categories = await Product.feedstock.category.list(req.params.product_id);
 					res.send({ product_feedstock_categories });
 				} catch (err) {
 					console.log(err);

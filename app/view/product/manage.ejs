@@ -47,8 +47,8 @@
 						</select>
 						<input type="submit" name="submit" class="btn-submit" value="Filtrar">
 					</form>
-					<div id="product-manage-filter-div" style="display:none">
-						<table class="tbl-info .width-fill width-fill" id="product-manage-filter-tbl"></table>
+					<div id="product-manage-filter-div" class="box-1" style="display:none">
+						<table class="tbl-info width-fill" id="product-manage-filter-tbl"></table>
 						<br>
 						<button id="productManagePrevious" autocomplete="off" disabled>&lsaquo;&lsaquo;</button>
 	                    <span id="productManagePageNumber"></span>
@@ -57,9 +57,15 @@
 				</div>
 				
 				<div class="box-1" id="product-manage-show-box" style="display:none;">
-					<button class="btn-generic-big" onclick="lib.displayDiv('product-manage-menu-box')">MENU</button>
+					
+					<button class="btn-display-box" onclick="lib.displayDiv('product-manage-menu-box')">MENU</button>
+
 					<div class="box-1" id="product-manage-menu-box" style="display:none"></div>
-					<table class="tbl-info width-fill" id="product-manage-info-table"></table>
+
+					<div class="box-1">
+						<h3>Informações do produto</h3>
+						<table class="tbl-info width-fill" id="product-manage-info-table"></table>
+					</div>
 
 					<div id="product-feedstock-add-box" style="display:none">
 						<form id="feedstock-filter-form" class="box-1">
@@ -88,20 +94,6 @@
 					
 					<div class="box-1" id="product-manage-image-box">
 						<div class="box-1" id="product-manage-image"></div>
-						<div name="carousel-navigation">
-							<button name="carousel-previous" autocomplete="off" disabled>&lsaquo;&lsaquo;</button>
-		                    <span name="carousel-page"></span>
-		                    <button name="carousel-next" autocomplete="off" disabled>&rsaquo;&rsaquo;</button>
-						</div>
-					</div>
-				</div>
-
-				<div id="department-show-box" class="box-2" style="display:none">
-					<div id="department-info-box"></div>
-
-					<div id="department-role-list-box">
-						<table id="department-role-list-table" class="tbl-info width-fill"></table>
-						<br>
 						<div name="carousel-navigation">
 							<button name="carousel-previous" autocomplete="off" disabled>&lsaquo;&lsaquo;</button>
 		                    <span name="carousel-page"></span>

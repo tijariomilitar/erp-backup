@@ -63,6 +63,21 @@ select:required:invalid {
      cursor: pointer;
 }
 
+.btn-display-box {
+	font-size: 12px;
+	width:99%;
+	height: 15px;
+	font-family: "HelveticaNeue-Light";
+	text-align: center;
+	background-color: #fff;
+	border: 1px solid #f0f0f0;
+	font-weight: bold;
+}
+
+.btn-display-box:hover {
+	border: 1px #ccc solid;
+}
+
 .btn-generic-small {
 	font-size: 12px;
 	width:95px;
@@ -390,6 +405,7 @@ select:required:invalid {
 	padding-bottom: 5px;
 	padding-left: 5px;
 	padding-right: 5px;
+    border-bottom-right-radius: 10px;
 }
 
 .tbl-info:hover tr td {
