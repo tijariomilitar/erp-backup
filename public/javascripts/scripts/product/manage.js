@@ -82,8 +82,8 @@ Product.manage = {
 				html += "<td>"+products[i].name+"</td>";
 				html += "<td>"+products[i].size+"</td>";
 				html += "<td>"+products[i].color+"</td>";
-				html += "<td ><a class='tbl-show-link nowrap' onclick='Product.edit("+products[i].id+")'>Edit</a></td>";
-				html += "<td><a class='tbl-show-link nowrap' onclick='Product.remove("+products[i].id+")'>Rem</a></td>";
+				html += "<td ><a class='tbl-show-link nowrap' onclick='Product.edit("+products[i].id+")'><img class='tbl-btn-generic-icon' src='/images/icon/edit.png'></a></td>";
+				html += "<td><a class='tbl-show-link nowrap' onclick='Product.remove("+products[i].id+")'><img class='tbl-btn-generic-icon' src='/images/icon/trash.png'></a></td>";
 				html += "</tr>";
 			};
 			document.getElementById("product-manage-filter-tbl").innerHTML = html;

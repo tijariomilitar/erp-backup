@@ -66,7 +66,8 @@ select:required:invalid {
 .btn-display-box {
 	font-size: 12px;
 	width:99%;
-	height: 15px;
+	padding-top: 3px;
+	height: 20px;
 	font-family: "HelveticaNeue-Light";
 	text-align: center;
 	background-color: #fff;
@@ -339,6 +340,10 @@ select:required:invalid {
 	padding-bottom: 2px;
 	/*border: 1px solid #c8c8c8;*/
 	border: 1px solid #8f9f94;
+}
+
+.tbl-btn-generic-icon {
+	width: 10px;
 }
 
 .btn-pagination {
