@@ -3,6 +3,7 @@
 // -------------------
 
 const lib = {
+	// Time
 	convertDate:function(date){
 		let str = date.split('-');
 		if(str!=""){
@@ -54,6 +55,8 @@ const lib = {
 		};
 		return array;
 	},
+
+	//Math
 	roundToInt: (num, places) => {
 		return +(parseFloat(num).toFixed(places));
 	},
@@ -61,9 +64,23 @@ const lib = {
 		return Math.round((value) * 100) / 100;
 	},
 
-// -------------------
+	// HTTP
+	serializedFormToJSON: (array) =>{
+		var string = "";
+		for(i in array){
+			if (i == 0) {
+				string += "{" + JSON.stringify(array[i].name) + ":" + JSON.stringify(array[i].value) + ", ";
+			} else if (i > 0 && i < array.length - 1) {
+				string += JSON.stringify(array[i].name) + ":" + JSON.stringify(array[i].value) + ", ";
+			} else if(array.length - 1 == i){
+				string += JSON.stringify(array[i].name) + ":" + JSON.stringify(array[i].value) + "}";
+			};
+		};
+
+		return string;
+	},
+
 // html/css lib
-// -------------------
 	displayDiv: (div) => {
 		let selectedDiv = document.getElementById(div);
 		if(selectedDiv.style.display == "none"){
@@ -99,7 +116,6 @@ const lib = {
 		select.innerHTML = "";
 		select.innerHTML += "<option value='0'>Sem resultados</option>"
 	},
-
 	carousel: {
 		execute: (box, render, response, pagination) => {
 			document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").onclick = function(){

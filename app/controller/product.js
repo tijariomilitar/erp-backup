@@ -145,6 +145,8 @@ const productController = {
 			// return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
 		// };
 
+		console.log(req.query);
+
 		var params = [];
 		var values = [];
 
@@ -161,12 +163,17 @@ const productController = {
 			params.push("color");
 			values.push(req.query.color);
 		};
+
+		console.log(params);
+
 		try {
 			if(req.query.name){
 				const products = await Product.filter(req.query.name, params, values);
+				console.log(products);
 				res.send({ products });
 			} else {
 				const products = await Product.filter(false, params, values);
+				console.log(products);
 				res.send({ products });
 			};
 		} catch (err) {

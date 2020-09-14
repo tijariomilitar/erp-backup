@@ -342,8 +342,20 @@ select:required:invalid {
 	border: 1px solid #8f9f94;
 }
 
-.tbl-btn-generic-icon {
-	width: 10px;
+.tbl-show-link:hover {
+	background-color: #cfcfcf;
+}
+
+.img-tbl-btn {
+	width: 15px;
+	height: 15px;
+	opacity: 0.6;
+	cursor: pointer;
+	padding: 2px;
+}
+
+.img-tbl-btn:hover {
+	opacity: 1;
 }
 
 .btn-pagination {
@@ -369,9 +381,7 @@ select:required:invalid {
 	background-color:#6c7c7c;
 }
 
-.tbl-show-link:hover {
-	background-color: #cfcfcf;
-}
+
 
 .span-menu {
 	border-radius: 3px;

@@ -1,14 +1,52 @@
-Product.save = (form) => {
-	$.ajax({
-		url: '/product/save',
-		method: 'post',
-		data: $("#"+form).serialize(),
-		success: (response) => {
-			if(API.verifyResponse(response, "product-create-form")){return};
-			alert(response.done);
-		}
+Product.save = async (form) => {
+	let product = {
+		id: document.getElementById(form).elements.namedItem("id").value,
+		code: document.getElementById(form).elements.namedItem("code").value,
+		name: document.getElementById(form).elements.namedItem("name").value,
+		color: document.getElementById(form).elements.namedItem("color").value,
+		size: document.getElementById(form).elements.namedItem("size").value
+	};
+
+	let response = await fetch("/product/save", {
+		method: "POST",
+		headers: {'Content-Type': 'application/json'},
+	    body: JSON.stringify(product)
 	});
+	response = await response.json();
+
+	if(API.verifyResponse(response, form)){ return false };
+	alert(response.done);
+
+	return response.product[0];
 };
+
+document.getElementById("product-create-form").addEventListener("submit", async (event) => {
+	event.preventDefault();
+	document.getElementById('product-create-form').elements.namedItem("submit").disabled = true;
+	document.getElementById('ajax-loader').style.visibility = 'visible';
+
+	let product = await Product.save('product-create-form');
+	if(!product){ return false };
+
+	// document.getElementById("product-filter-form").elements.namedItem("name").value = document.getElementById("product-create-form").elements.namedItem("name").value;
+		
+	// Product.findById(product.id);
+
+	document.getElementById("product-create-form").elements.namedItem("id").value = "";
+	document.getElementById("product-create-form").elements.namedItem("code").value = "";
+	document.getElementById("product-create-form").elements.namedItem("name").value = "";
+	document.getElementById("product-create-form").elements.namedItem("color").value = "";
+	document.getElementById("product-create-form").elements.namedItem("size").value = "";
+
+	document.getElementById('product-create-form').elements.namedItem("submit").disabled = false;
+	document.getElementById('ajax-loader').style.visibility = 'hidden';
+});
+
+
+// 		let location = document.getElementById("product-filter-form").elements.namedItem('location').value;
+// 		let name = document.getElementById("product-filter-form").elements.namedItem('name').value;
+// 		let code = document.getElementById("product-filter-form").elements.namedItem('code').value;
+// 		let color = document.getElementById("product-filter-form").elements.namedItem('color').value;
 
 Product.edit = (id) => {
 	document.getElementById('ajax-loader').style.visibility = 'visible';
@@ -82,8 +120,9 @@ Product.manage = {
 				html += "<td>"+products[i].name+"</td>";
 				html += "<td>"+products[i].size+"</td>";
 				html += "<td>"+products[i].color+"</td>";
-				html += "<td ><a class='tbl-show-link nowrap' onclick='Product.edit("+products[i].id+")'><img class='tbl-btn-generic-icon' src='/images/icon/edit.png'></a></td>";
-				html += "<td><a class='tbl-show-link nowrap' onclick='Product.remove("+products[i].id+")'><img class='tbl-btn-generic-icon' src='/images/icon/trash.png'></a></td>";
+				/*onclick='Product.edit("+products[i].id+")'*/
+				html += "<td><img class='img-tbl-btn' src='/images/icon/edit.png' onclick='Product.edit("+products[i].id+")'></td>";
+				html += "<td><img class='img-tbl-btn' src='/images/icon/trash.png' onclick='Product.remove("+products[i].id+")'></td>";
 				html += "</tr>";
 			};
 			document.getElementById("product-manage-filter-tbl").innerHTML = html;
@@ -111,23 +150,3 @@ Product.manage = {
 		}
 	}
 };
-
-document.getElementById("product-create-form").addEventListener("submit", (event) => {
-	event.preventDefault();
-	document.getElementById('product-create-form').elements.namedItem("submit").disabled = true;
-	document.getElementById('ajax-loader').style.visibility = 'visible';
-
-	Product.save('product-create-form');
-
-	document.getElementById("product-filter-form").elements.namedItem("name").value = document.getElementById("product-create-form").elements.namedItem("name").value;
-	$("#product-filter-form").submit();
-	
-	document.getElementById("product-create-form").elements.namedItem("id").value = "";
-	document.getElementById("product-create-form").elements.namedItem("code").value = "";
-	document.getElementById("product-create-form").elements.namedItem("name").value = "";
-	document.getElementById("product-create-form").elements.namedItem("color").value = "";
-	document.getElementById("product-create-form").elements.namedItem("size").value = "";
-
-	document.getElementById('product-create-form').elements.namedItem("submit").disabled = false;
-	document.getElementById('ajax-loader').style.visibility = 'hidden';
-});

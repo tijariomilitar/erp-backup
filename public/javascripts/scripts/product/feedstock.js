@@ -46,8 +46,10 @@ Product.feedstock = {
 								html += "<td>"+response.product.feedstocks[i].amount+"un</td>";
 								html += "<td>"+response.product.feedstocks[i].measure+"cm</td>";
 							};
-							html += "<td><a class='tbl-show-link' onclick='Product.feedstock.edit("+response.product.feedstocks[i].id+", "+response.product.feedstocks[i].feedstock_id+", `"+response.product.feedstocks[i].uom+"`, "+response.product.feedstocks[i].amount+", "+response.product.feedstocks[i].measure+", "+response.product.feedstocks[i].category_id+", "+response.product.feedstocks[i].product_id+")'><img class='tbl-btn-generic-icon' src='/images/icon/edit.png'></a></td>";
-							html += "<td><a class='tbl-show-link' onclick='Product.feedstock.remove("+response.product.feedstocks[i].id+", "+response.product.feedstocks[i].product_id+")'><img class='tbl-btn-generic-icon' src='/images/icon/trash.png'></a></td>";
+							// onclick='Product.feedstock.edit("+response.product.feedstocks[i].id+", "+response.product.feedstocks[i].feedstock_id+", `"+response.product.feedstocks[i].uom+"`, "+response.product.feedstocks[i].amount+", "+response.product.feedstocks[i].measure+", "+response.product.feedstocks[i].category_id+", "+response.product.feedstocks[i].product_id+")'
+							// onclick='Product.feedstock.remove("+response.product.feedstocks[i].id+", "+response.product.feedstocks[i].product_id+")'
+							html += "<td><img class='img-tbl-btn' src='/images/icon/edit.png'></td>";
+							html += "<td><img class='img-tbl-btn' src='/images/icon/trash.png'></td>";
 							html += "</tr>";
 						};
 
