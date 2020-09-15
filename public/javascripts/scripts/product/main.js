@@ -14,7 +14,6 @@ const Product = {
 			method: 'get',
 			success: (response) => {
 				if(API.verifyResponse(response)){return};
-
 				
 				document.getElementById('ajax-loader').style.visibility = 'hidden';
 			}
@@ -66,7 +65,9 @@ document.getElementById("product-filter-form").addEventListener("submit", async 
 	let products = await Product.filter(product.code, product.name, product.color);
 
 	const pagination = { pageSize: 10, page: 0};
-	$(() => { lib.carousel.execute("product-manage-filter-box", Product.manage.table.filter, products, pagination); });
+	if(product.location == "product-manage"){
+		$(() => { lib.carousel.execute("product-manage-filter-box", Product.manage.table.filter, products, pagination); });
+	};
 
 	document.getElementById('product-filter-form').elements.namedItem("submit").disabled = false;
 	document.getElementById('ajax-loader').style.visibility = 'hidden';
