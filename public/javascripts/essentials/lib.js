@@ -152,19 +152,23 @@ const lib = {
 				return;
 			};
 
-			if(response.length <= pagination.pageSize || pagination.page >= response.length / pagination.pageSize - 1){
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = false;
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = ""+ (pagination.page + 1) + " de " + Math.ceil(response.length / pagination.pageSize);
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = true;
-			};
-
 			if(response.length <= pagination.pageSize || pagination.page == 0){
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = true;
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = ""+ (pagination.page + 1) + " de " + Math.ceil(response.length / pagination.pageSize);
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = false;
 			};
 
-			document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = ""+ (pagination.page + 1) + " de " + Math.ceil(response.length / pagination.pageSize) ;
+			if(pagination.page > 0 && pagination.page < (response.length / pagination.pageSize) - 1){
+				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = false;
+				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = ""+ (pagination.page + 1) + " de " + Math.ceil(response.length / pagination.pageSize);
+				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = false;
+			};
+
+			if(response.length <= pagination.pageSize || pagination.page >= response.length / pagination.pageSize - 1){
+				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = false;
+				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = ""+ (pagination.page + 1) + " de " + Math.ceil(response.length / pagination.pageSize);
+				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = true;
+			};
 		}
 	}
 };

@@ -105,7 +105,7 @@ Product.manage = {
 		}
 	},
 	table: {
-		render: (products, pageSize, page, location) => {
+		filter: (products, pagination) => {
 			var html = "<tr>";
 			html += "<td>Cód</td>";
 			html += "<td>Nome</td>";
@@ -114,7 +114,8 @@ Product.manage = {
 			html += "<td></td>";
 			html += "<td></td>";
 			html += "</tr>";
-			for (let i = page * pageSize; i < products.length && i < (page + 1) * pageSize;i++){
+
+			for (let i = pagination.page * pagination.pageSize; i < products.length && i < (pagination.page + 1) * pagination.pageSize; i++){
 				html += "<tr>";
 				html += "<td><a class='tbl-show-link nowrap' onclick='Product.manage.show("+products[i].id+", "+true+")'>"+products[i].code+"</a></td>";
 				html += "<td>"+products[i].name+"</td>";
@@ -125,9 +126,8 @@ Product.manage = {
 				html += "<td><img class='img-tbl-btn' src='/images/icon/trash.png' onclick='Product.remove("+products[i].id+")'></td>";
 				html += "</tr>";
 			};
-			document.getElementById("product-manage-filter-tbl").innerHTML = html;
-			document.getElementById("product-manage-filter-div").style.display = "block";
-			$("#"+location+"PageNumber").text("" + (page + 1) + " de " + Math.ceil(products.length / pageSize));
+			document.getElementById("product-manage-filter-table").innerHTML = html;
+			document.getElementById("product-manage-filter-box").style.display = "block";
 		},
 		info: (product) => {
 			let html = "";
