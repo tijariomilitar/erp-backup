@@ -59,14 +59,14 @@ Feedstock.colorList = async () => {
 	return db(query);
 };
 
-Feedstock.remove = async (id) => {
+Feedstock.delete = async (id) => {
 	let query = "DELETE FROM cms_wt_erp.feedstock WHERE id='"+id+"';";
 	return db(query);
 };
 
 Feedstock.storage = {
 	//Criar funções de inserção
-	removeByFeedstockId: async (id) => {
+	deleteByFeedstockId: async (id) => {
 		let query = "DELETE FROM cms_wt_erp.feedstock_storage WHERE feedstock_id='"+id+"';";
 		return db(query);
 	}
@@ -112,7 +112,7 @@ Feedstock.supplier = {
 				let query = "SELECT * FROM cms_wt_erp.feedstock_supplier_storage WHERE supplier_id='"+id+"';";
 				return db(query);
 			},
-			removeByFeedstockId: async (id) => {
+			deleteByFeedstockId: async (id) => {
 				let query = "DELETE FROM cms_wt_erp.feedstock_supplier_storage WHERE feedstock_id='"+id+"';";
 				return db(query);
 			}

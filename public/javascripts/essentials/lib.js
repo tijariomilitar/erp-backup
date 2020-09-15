@@ -89,6 +89,10 @@ const lib = {
 			selectedDiv.style.display = "none";	
 		};
 	},
+	displayMenuText: (button) => {
+		if(button.innerHTML == "⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓"){ button.innerHTML = "⇑  ⇑  ⇑  ⇑  ⇑  ⇑  ⇑  ⇑" ;} 
+		else if(button.innerHTML == "⇑  ⇑  ⇑  ⇑  ⇑  ⇑  ⇑  ⇑"){ button.innerHTML = "⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓"; };
+	},
 	clearTable(table, location){
 		document.getElementById(table).innerHTML = "NENHUM REGISTRO ENCONTRADO";
 		$('#'+location+'Previous').prop('disabled');

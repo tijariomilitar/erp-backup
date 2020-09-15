@@ -115,13 +115,13 @@ const feedstockController = {
 			res.send({ msg: "Ocorreu um erro ao filtrar as matérias-primas, favor contatar o suporte." });
 		};
 	},
-	remove: async (req, res) => {
+	delete: async (req, res) => {
 		if(!await userController.verifyAccess(req, res, ['adm','man'])){
 			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
 		};
 
 		try {
-			await Feedstock.remove(req.query.id);
+			await Feedstock.delete(req.query.id);
 			await Feedstock.supplier.feedstock.removeByFeedstockId(req.query.id);
 			await Feedstock.storage.removeByFeedstockId(req.query.id);
 			await Product.feedstock.removeByFeedstockId(req.query.id);

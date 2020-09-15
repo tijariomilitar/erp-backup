@@ -60,6 +60,7 @@ const productController = {
 				
 				var row = await Product.save(product);
 				let newProduct = await Product.findById(row.insertId);
+
 				res.send({ done: 'Produto cadastrado com sucesso!', product: newProduct });
 			} else {
 				var row = await Product.findByCode(product.code);
@@ -71,6 +72,9 @@ const productController = {
 				
 				var row = await Product.update(product);
 				let newProduct = await Product.findById(row.insertId);
+
+				console.log(newProduct);
+
 				res.send({ done: 'Produto atualizado com sucesso!', product: newProduct });
 			};
 		} catch (err) {
@@ -145,7 +149,6 @@ const productController = {
 			// return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
 		// };
 
-		console.log(req.query);
 
 		var params = [];
 		var values = [];
@@ -164,16 +167,12 @@ const productController = {
 			values.push(req.query.color);
 		};
 
-		console.log(params);
-
 		try {
 			if(req.query.name){
 				const products = await Product.filter(req.query.name, params, values);
-				console.log(products);
 				res.send({ products });
 			} else {
 				const products = await Product.filter(false, params, values);
-				console.log(products);
 				res.send({ products });
 			};
 		} catch (err) {
@@ -181,15 +180,15 @@ const productController = {
 			res.send({ msg: "Ocorreu um erro ao filtrar os produtos." });
 		};
 	},
-	remove: async (req, res) => {
+	delete: async (req, res) => {
 		if(!await userController.verifyAccess(req, res, ['adm','man'])){
 			return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
 		};
 
 		try {
 			await Product.feedstock.removeByProductId(req.query.id);
-			await Product.image.removeAll(req.query.id);
-			await Product.remove(req.query.id);
+			await Product.image.removeByProductId(req.query.id);
+			await Product.delete(req.query.id);
 			res.send({ done: 'Produto excluído com sucesso!' });
 		} catch (err) {
 			console.log(err);

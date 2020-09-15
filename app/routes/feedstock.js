@@ -8,7 +8,7 @@ router.get('/manage', feedstockController.manage);
 router.post('/save', feedstockController.save);
 router.get('/id/:id', feedstockController.findById);
 router.get('/filter', feedstockController.filter);
-router.delete('/remove', feedstockController.remove);
+router.delete('/delete', feedstockController.delete);
 
 router.get('/request', feedstockController.request.index);
 router.post('/request/save', feedstockController.request.save);

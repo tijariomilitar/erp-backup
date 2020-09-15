@@ -51,7 +51,7 @@ Product.filter = async (name, params, values) => {
 	return db(query);
 };
 
-Product.remove = async (id) => {
+Product.delete = async (id) => {
 	let query = "DELETE FROM cms_wt_erp.product WHERE id='"+id+"';";
 	return db(query);
 };
@@ -71,7 +71,7 @@ Product.image = {
 		let query = "DELETE FROM cms_wt_erp.product_image WHERE id='"+image_id+"';";
 		return db(query);
 	},
-	removeAll: async (id) => {
+	removeByProductId: async (id) => {
 		let query = "DELETE FROM cms_wt_erp.product_image WHERE product_id='"+id+"';";
 		return db(query);
 	}
@@ -166,6 +166,9 @@ Product.production = {
 		list: async (id) => {
 			let query = "SELECT * FROM cms_wt_erp.product_production_product WHERE production_id='"+id+"';";
 			return db(query);
+		},
+		remove: async (product_production_id) => {
+			let query = "DELETE FROM cms_wt_erp.product_production_product WHERE id='"+product_production_id+"';"
 		}
 	},
 	feedstock: {

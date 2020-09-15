@@ -11,7 +11,7 @@ router.get('/id/:id', productController.findById);
 router.get('/code/:code', productController.findByCode);
 router.get('/name/:name', productController.findByName);
 router.get('/filter', productController.filter);
-router.delete('/remove', productController.remove);
+router.delete('/delete', productController.delete);
 
 router.post('/addimage', productController.image.add);
 router.delete('/removeimage', productController.image.remove);
