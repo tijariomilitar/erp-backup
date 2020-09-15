@@ -70,12 +70,10 @@ const productController = {
 					};
 				};
 				
-				var row = await Product.update(product);
-				let newProduct = await Product.findById(row.insertId);
+				await Product.update(product);
+				let updatedProduct = await Product.findById(product.id);
 
-				console.log(newProduct);
-
-				res.send({ done: 'Produto atualizado com sucesso!', product: newProduct });
+				res.send({ done: 'Produto atualizado com sucesso!', product: updatedProduct });
 			};
 		} catch (err) {
 			console.log(err);
@@ -202,8 +200,8 @@ const productController = {
 			};
 
 			const image = {
-				product_id: req.query.product_id,
-				url: req.query.image_url
+				product_id: req.body.product_id,
+				url: req.body.image_url
 			};
 
 			try {
@@ -220,7 +218,7 @@ const productController = {
 			};
 
 			try {
-				await Product.image.remove(req.query.id);
+				await Product.image.remove(req.query.image_id);
 				res.send({ done: 'Imagem excluída!' });
 			} catch (err) {
 				console.log(err);

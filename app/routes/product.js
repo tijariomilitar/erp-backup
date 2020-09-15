@@ -13,8 +13,8 @@ router.get('/name/:name', productController.findByName);
 router.get('/filter', productController.filter);
 router.delete('/delete', productController.delete);
 
-router.post('/addimage', productController.image.add);
-router.delete('/removeimage', productController.image.remove);
+router.post('/image/add', productController.image.add);
+router.delete('/image/remove', productController.image.remove);
 
 router.post('/feedstock/add', productController.feedstock.add);
 router.delete('/feedstock/remove', productController.feedstock.remove);

@@ -1,6 +1,4 @@
-Product.production = {
-	kart: []
-};
+Product.production = { kart: [] };
 
 // verify if kart is empty
 if(JSON.parse(localStorage.getItem("productProductionKart")) != null){
