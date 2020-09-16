@@ -107,6 +107,7 @@ Product.controller.manage = {
 		document.getElementById("product-feedstock-box").style.display = "none";
 		document.getElementById("product-manage-show-box").style.display = "block";
 
+		Product.view.manage.menu(product);
 		Product.view.info(product, "product-manage-info-table");
 		
 		const pagination = { pageSize: 1, page: 0};
