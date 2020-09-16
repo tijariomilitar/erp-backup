@@ -24,18 +24,25 @@ Product.controller.image = {
 			});
 		};
 	},
-	show: (images, pagination) => {
-		let htmlImage = "";
-	    for (let i = pagination.page * pagination.pageSize; i < images.length && i < (pagination.page + 1) * pagination.pageSize;i++){
-			htmlImage += "<img class='image-box' src='"+images[i].url+"'>";
-			htmlImage += "<div clas='box-1'>";
-			htmlImage += "<br>";
-			htmlImage += "<button class='btn-generic-big' onclick='Product.image.remove("+images[i].id+", "+images[i].product_id+")'>Excluir</button>";
-			htmlImage += "</div>";
-		};
+	show: async (product_id) => {
+		document.getElementById('ajax-loader').style.visibility = 'visible';
+		
+		let product = await Product.findById(product_id);
+		if(!product){ return false };
 
-		document.getElementById('product-manage-image').innerHTML = htmlImage;
-		document.getElementById('product-manage-image-box').style.display = 'block';
+		document.getElementById("product-manage-show-box").style.display = "none";
+		document.getElementById("product-feedstock-add-box").style.display = "none";
+		document.getElementById("product-feedstock-box").style.display = "none";
+
+		document.getElementById("product-manage-show-box").style.display = "block";
+
+		Product.view.manage.menu(product);
+		Product.view.info(product, "product-manage-info-table");
+		
+		const pagination = { pageSize: 1, page: 0};
+		$(() => { lib.carousel.execute("product-manage-image-box", Product.view.image.show, product.images, pagination); });
+		
+		document.getElementById('ajax-loader').style.visibility = 'hidden';
 	},
 	remove: async (image_id, product_id) => {
 		let r = confirm("Deseja realmente excluir a image?");
@@ -48,5 +55,27 @@ Product.controller.image = {
 
 			document.getElementById('ajax-loader').style.visibility = 'hidden';
 		};
+	},
+	manage: {
+		show: async (product_id) => {
+			document.getElementById('ajax-loader').style.visibility = 'visible';
+			
+			let product = await Product.findById(product_id);
+			if(!product){ return false };
+
+			document.getElementById("product-manage-show-box").style.display = "none";
+			document.getElementById("product-feedstock-add-box").style.display = "none";
+			document.getElementById("product-feedstock-box").style.display = "none";
+
+			document.getElementById("product-manage-show-box").style.display = "block";
+
+			Product.view.manage.menu(product);
+			Product.view.info(product, "product-manage-info-table");
+			
+			const pagination = { pageSize: 1, page: 0};
+			$(() => { lib.carousel.execute("product-manage-image-box", Product.view.manage.image.show, product.images, pagination); });
+			
+			document.getElementById('ajax-loader').style.visibility = 'hidden';
+		}
 	}
 };

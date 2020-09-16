@@ -30,6 +30,25 @@ document.getElementById("product-create-form").addEventListener("submit", async 
 	document.getElementById('ajax-loader').style.visibility = 'hidden';
 });
 
+Product.controller.show = async (product_id) => {
+	document.getElementById('ajax-loader').style.visibility = 'visible';
+	
+	let product = await Product.findById(product_id);
+	if(!product){ return false };
+
+	document.getElementById("product-show-box").style.display = "none";
+
+	document.getElementById("product-feedstock-box").style.display = "none";
+	document.getElementById("product-manage-show-box").style.display = "block";
+
+	Product.view.info(product, "product-info-table");
+	
+	const pagination = { pageSize: 1, page: 0};
+	$(() => { lib.carousel.execute("product-image-box", Product.view.image.show, product.images, pagination); });
+	
+	document.getElementById('ajax-loader').style.visibility = 'hidden';
+};
+
 Product.controller.edit = async (id) => {
 	let product = await Product.findById(id);
 	if(!product){ return false };
@@ -74,4 +93,25 @@ Product.controller.delete = async (id) => {
 		
 		document.getElementById('ajax-loader').style.visibility = 'hidden';
 	};
+};
+
+Product.controller.manage = {
+	show: async (product_id) => {
+		document.getElementById('ajax-loader').style.visibility = 'visible';
+		
+		let product = await Product.findById(product_id);
+		if(!product){ return false };
+
+		document.getElementById("product-manage-show-box").style.display = "none";
+
+		document.getElementById("product-feedstock-box").style.display = "none";
+		document.getElementById("product-manage-show-box").style.display = "block";
+
+		Product.view.info(product, "product-manage-info-table");
+		
+		const pagination = { pageSize: 1, page: 0};
+		$(() => { lib.carousel.execute("product-manage-image-box", Product.view.image.show, product.images, pagination); });
+		
+		document.getElementById('ajax-loader').style.visibility = 'hidden';
+	}
 };

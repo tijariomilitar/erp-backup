@@ -47,21 +47,18 @@
 						</select><br>
 						<input type="submit" name="submit" class="btn-submit" value="Filtrar">
 					</form>
+					
 					<div id="product-manage-filter-box" class="box-1" style="display:none">
 						<table class="tbl-info width-fill" id="product-manage-filter-table"></table>
 						<br>
-						<div name="carousel-navigation">
-							<button name="carousel-previous" autocomplete="off" disabled>&lsaquo;&lsaquo;</button>
-		                    <span name="carousel-page"></span>
-		                    <button name="carousel-next" autocomplete="off" disabled>&rsaquo;&rsaquo;</button>
-						</div>
+        				<% include ./../partials/carousel %>
 					</div>
 				</div>
 				
 				<div class="box-1" id="product-manage-show-box" style="display:none;">
-					<button class="btn-display-box" onclick="lib.displayDiv('product-manage-menu-box');lib.displayMenuText(this)">⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓</button>
+					<button class="btn-display-box" onclick="lib.displayDiv('product-manage-menu-box');lib.displayMenuText(this);">⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓</button>
 
-					<div class="box-1" id="product-manage-menu-box" style="display:none"></div>
+					<div class="box-1" id="product-manage-menu-box"></div>
 
 					<div class="box-1">
 						<h3>Informações do produto</h3>
@@ -90,7 +87,6 @@
         				<% include ./feedstock/form/category-add %>
 						
         				<% include ./feedstock/form/add %>
-
 					</div>
 
 					<div class="box-1" id="product-feedstock-box" style="display:none">
@@ -99,11 +95,7 @@
 					
 					<div class="box-1" id="product-manage-image-box">
 						<div class="box-1" id="product-manage-image"></div>
-						<div name="carousel-navigation">
-							<button name="carousel-previous" autocomplete="off" disabled>&lsaquo;&lsaquo;</button>
-		                    <span name="carousel-page"></span>
-		                    <button name="carousel-next" autocomplete="off" disabled>&rsaquo;&rsaquo;</button>
-						</div>
+        				<% include ./../partials/carousel %>
 					</div>
 				</div>
 			</div>
@@ -115,10 +107,8 @@
 	<footer>
         <% include ./../partials/footer %>
         <% include ./partial %>
-        <script src="/javascripts/scripts/product/controller/manage.js"></script>
-        <script src="/javascripts/scripts/product/model/manage.js"></script>
+
         <script src="/javascripts/scripts/product/view/manage.js"></script>
-        
         <script src="/javascripts/scripts/product/feedstock.js"></script>
 	</footer>
 </html>
