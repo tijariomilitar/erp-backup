@@ -36,10 +36,8 @@ Product.controller.show = async (product_id) => {
 	let product = await Product.findById(product_id);
 	if(!product){ return false };
 
-	document.getElementById("product-show-box").style.display = "none";
-
 	document.getElementById("product-feedstock-box").style.display = "none";
-	document.getElementById("product-manage-show-box").style.display = "block";
+	document.getElementById("product-show-box").style.display = "block";
 
 	Product.view.info(product, "product-info-table");
 	
@@ -102,8 +100,6 @@ Product.controller.manage = {
 		let product = await Product.findById(product_id);
 		if(!product){ return false };
 
-		document.getElementById("product-manage-show-box").style.display = "none";
-
 		document.getElementById("product-feedstock-box").style.display = "none";
 		document.getElementById("product-manage-show-box").style.display = "block";
 
@@ -111,7 +107,7 @@ Product.controller.manage = {
 		Product.view.info(product, "product-manage-info-table");
 		
 		const pagination = { pageSize: 1, page: 0};
-		$(() => { lib.carousel.execute("product-manage-image-box", Product.view.image.show, product.images, pagination); });
+		$(() => { lib.carousel.execute("product-manage-image-box", Product.view.image.manage.show, product.images, pagination); });
 		
 		document.getElementById('ajax-loader').style.visibility = 'hidden';
 	}
