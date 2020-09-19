@@ -32,7 +32,7 @@ Product.view.manage = {
 		html += "<h4 style='opacity:0.6'>MENU PRINCIPAL</h4>";
 		html += "<button class='btn-generic-medium' onclick='Product.controller.image.add("+product.id+")'>Adicionar Imagem</button>";
 		html += "<button class='btn-generic-medium' onclick='Product.feedstock.form.display("+product.id+", `product-feedstock-add-form`)'>Adicionar Matéria-Prima</button>";
-		html += "<button class='btn-generic-medium' onclick='Product.feedstock.list("+product.id+")'>Listar Matérias-Prima</button>";
+		html += "<button class='btn-generic-medium' onclick='Product.controller.feedstock.list("+product.id+");lib.displayDiv(`product-feedstock-box`);'>Listar Matéssrias-Prima</button>";
 
 		document.getElementById("product-manage-menu-box").innerHTML = html;
 	}

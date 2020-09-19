@@ -1,11 +1,6 @@
 Product.feedstock = {
-	manage: (product_id) => {
-		
-	},
 	list: (product_id, update) => {
-		if(!update){
-			lib.displayDiv("product-feedstock-box");
-		};
+		
 		if(document.getElementById("product-feedstock-box").style.display == "block"){
 			document.getElementById('ajax-loader').style.visibility = 'visible';
 			
