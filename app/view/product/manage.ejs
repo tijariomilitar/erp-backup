@@ -56,12 +56,11 @@
 				</div>
 				
 				<div class="box-1" id="product-manage-show-box" style="display:none;">
-					<button class="btn-display-box" onclick="lib.displayDiv('product-manage-menu-box');lib.displayMenuText(this);">⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓</button>
-
+					<button class="btn-display-box" onclick="lib.displayDiv('product-manage-menu-box');lib.displayMenuText(this, 'Mostrar Menu ⇓  ⇓  ⇓', 'Esconder Menu ⇑  ⇑  ⇑');">Mostrar Menu ⇓  ⇓  ⇓</button>
 					<div class="box-1" id="product-manage-menu-box" style="display:none"></div>
 
 					<div class="box-1">
-						<h3>Informações do produto</h3>
+						<h3 id="product-manage-info-title" class="underline">Informações do produto</h3>
 						<table class="tbl-info width-fill" id="product-manage-info-table"></table>
 					</div>
 
@@ -69,7 +68,7 @@
 						<form id="feedstock-filter-form" class="box-1">
 							<fieldset class="fieldset-generic">
     							<legend>Filtrar Matérias-Prima</legend>
-								<input type="hidden" name="location" value="productAddFeedstock">
+								<input type="hidden" name="location" value="product-feedstock-add">
 								<input type="text" name="feedstock_code" class="btn-generic-small" placeholder="Cód" autocomplete="off">
 								<input type="text" name="name" class="btn-generic-small" placeholder="Nome" autocomplete="off">
 								<select name="color" class="btn-generic-small">
@@ -90,9 +89,11 @@
 					</div>
 
 					<div class="box-1" id="product-feedstock-box" style="display:none">
-						<table class="tbl-info box-1" id="product-feedstock-table"></table>
+						<div id="product-feedstock-list-box"></div>
+        				<% include ./../partials/carousel %>
 					</div>
 					
+					<button class="btn-display-box" onclick="lib.displayDiv('product-manage-image-box');lib.displayMenuText(this)">⇑  ⇑  ⇑  ⇑  ⇑  ⇑  ⇑  ⇑</button>
 					<div class="box-1" id="product-manage-image-box">
 						<div class="box-1" id="product-manage-image"></div>
         				<% include ./../partials/carousel %>

@@ -39,7 +39,7 @@ Product.controller.show = async (product_id) => {
 	document.getElementById("product-feedstock-box").style.display = "none";
 	document.getElementById("product-show-box").style.display = "block";
 
-	Product.view.info(product, "product-info-table");
+	Product.view.info(product, "product-info-table", "product-info-title");
 	
 	const pagination = { pageSize: 1, page: 0};
 	$(() => { lib.carousel.execute("product-image-box", Product.view.image.show, product.images, pagination); });
@@ -103,8 +103,10 @@ Product.controller.manage = {
 		document.getElementById("product-feedstock-box").style.display = "none";
 		document.getElementById("product-manage-show-box").style.display = "block";
 
+		document.getElementById("product-feedstock-category-create-form").elements.namedItem("id").value = product_id;
+
 		Product.view.manage.menu(product);
-		Product.view.info(product, "product-manage-info-table");
+		Product.view.info(product, "product-manage-info-table", "product-manage-info-table");
 		
 		const pagination = { pageSize: 1, page: 0};
 		$(() => { lib.carousel.execute("product-manage-image-box", Product.view.image.manage.show, product.images, pagination); });

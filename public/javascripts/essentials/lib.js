@@ -89,9 +89,9 @@ const lib = {
 			selectedDiv.style.display = "none";	
 		};
 	},
-	displayMenuText: (button) => {
-		if(button.innerHTML == "⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓"){ button.innerHTML = "⇑  ⇑  ⇑  ⇑  ⇑  ⇑  ⇑  ⇑" ;} 
-		else if(button.innerHTML == "⇑  ⇑  ⇑  ⇑  ⇑  ⇑  ⇑  ⇑"){ button.innerHTML = "⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓  ⇓"; };
+	displayMenuText: (button, openText, closeText) => {
+		if(button.innerHTML == openText){ button.innerHTML = closeText ;} 
+		else if(button.innerHTML == closeText){ button.innerHTML = openText; };
 	},
 	clearTable(table, location){
 		document.getElementById(table).innerHTML = "NENHUM REGISTRO ENCONTRADO";
@@ -148,12 +148,10 @@ const lib = {
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = true;
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = "0 de 0";
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = true;
-				return;
 			} else if(response.length / pagination.pageSize <= 1){
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = true;
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = "1 de 1";
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = true;
-				return;
 			};
 
 			if(response.length <= pagination.pageSize || pagination.page == 0){

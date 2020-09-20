@@ -18,9 +18,9 @@ router.delete('/image/remove', productController.image.remove);
 
 router.post('/feedstock/add', productController.feedstock.add);
 router.delete('/feedstock/remove', productController.feedstock.remove);
-router.get('/feedstock/list/id/:id', productController.feedstock.list);
+router.get('/feedstock/list/product_id/:product_id', productController.feedstock.list);
 router.post('/feedstock/category/save', productController.feedstock.category.save);
-router.get('/feedstock/category/list/:product_id', productController.feedstock.category.list);
+router.get('/feedstock/category/list/product_id/:product_id', productController.feedstock.category.list);
 
 router.post('/categorySave', productController.categorySave);
 router.get('/categoryList', productController.categoryList);

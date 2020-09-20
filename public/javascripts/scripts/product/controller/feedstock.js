@@ -3,76 +3,79 @@ Product.controller.feedstock = {
 		if(document.getElementById("product-feedstock-box").style.display == "none"){
 			document.getElementById('ajax-loader').style.visibility = 'visible';
 
-			let product = {
-				feedstocks: await Product.feedstock.list(product_id),
-				feedstock_categories: await Product.feedstock.category.list(product_id)
+			let product = { id: product_id };
+			product.feedstocks = await Product.feedstock.list(product_id);
+			product.feedstock_categories = await Product.feedstock.category.list(product_id);
+
+			let feedstocks = [];
+
+			for(i in product.feedstock_categories){
+				product.feedstock_categories[i].feedstocks = [];
+				product.feedstock_categories[i].feedstocks.name = product.feedstock_categories[i].name;
+				for(j in product.feedstocks){
+					if(product.feedstock_categories[i].id == product.feedstocks[j].category_id){
+						product.feedstocks[j].category_name = product.feedstock_categories[i].name;
+						product.feedstock_categories[i].feedstocks.push(product.feedstocks[j]);
+					};
+				};
+				if(product.feedstock_categories[i].feedstocks.length){
+					feedstocks.push(product.feedstock_categories[i].feedstocks);
+				};
 			};
 
-			// const product.feedstocks = 
-			// const feedstock_categories = ;
+			let noCategory = [];
+			for(i in product.feedstocks){
+				noCategory.name = "Sem categoria";
+				if(!product.feedstocks[i].category_id){
+					product.feedstocks[i].category_name = noCategory.name;
+					noCategory.push(product.feedstocks[i]);
+				};
+			};
+			feedstocks.push(noCategory);
 
-			console.log(product);
-
-			// let feedstock = [];
-
-			// for(i in product.feedstocks){
-			// 	if(!product.feedstocks[i].category_id){
-			// 		console.log('ok')
-			// 	};
-			// };
+			const pagination = { pageSize: 3, page: 0};
+			$(() => { lib.carousel.execute("product-feedstock-box", Product.view.feedstock.list, feedstocks, pagination); });
 
 			return document.getElementById('ajax-loader').style.visibility = 'hidden';
-			
-			$.ajax({
-				url: "/product/feedstock/list/id/"+product_id,
-				method: "get",
-				success: (response) => {
-
-					if(response.product.feedstocks.length){
-						var html = "";
-
-						html += "<tr>";
-						html += "<td>Cód</td>";
-						html += "<td>Nome</td>";
-						html += "<td>Cor</td>";
-						html += "<td>Qtd</td>";
-						html += "<td>Cm</td>";
-						html += "<td></td>";
-						html += "<td></td>";
-						html += "</tr>";
-
-						response.product.feedstocks.sort((a, b) => {
-						  return a.code - b.code;
-						});
-
-						for(i in response.product.feedstocks){
-							html += "<tr>";
-							html += "<td class='nowrap'>"+response.product.feedstocks[i].code+"</td>";
-							html += "<td>"+response.product.feedstocks[i].name+"</td>";
-							html += "<td>"+response.product.feedstocks[i].color+"</td>";
-							if(response.product.feedstocks[i].uom == 'un'){
-								html += "<td>"+response.product.feedstocks[i].amount+"un</td>";
-								html += "<td></td>";
-							} else if(response.product.feedstocks[i].uom == 'cm'){
-								html += "<td>"+response.product.feedstocks[i].amount+"un</td>";
-								html += "<td>"+response.product.feedstocks[i].measure+"cm</td>";
-							};
-							// onclick='Product.feedstock.edit("+response.product.feedstocks[i].id+", "+response.product.feedstocks[i].feedstock_id+", `"+response.product.feedstocks[i].uom+"`, "+response.product.feedstocks[i].amount+", "+response.product.feedstocks[i].measure+", "+response.product.feedstocks[i].category_id+", "+response.product.feedstocks[i].product_id+")'
-							// onclick='Product.feedstock.remove("+response.product.feedstocks[i].id+", "+response.product.feedstocks[i].product_id+")'
-							html += "<td><img class='img-tbl-btn' src='/images/icon/edit.png'></td>";
-							html += "<td><img class='img-tbl-btn' src='/images/icon/trash.png'></td>";
-							html += "</tr>";
-						};
-
-						document.getElementById("product-feedstock-box").style.display = "block";
-						document.getElementById("product-feedstock-table").innerHTML = html;
-					} else {
-						document.getElementById("product-feedstock-table").innerHTML = "Sem registros!";
-					};
-
-					document.getElementById('ajax-loader').style.visibility = 'hidden';
-				}
-			});
 		};
+	},
+	edit: () => {
+		return console.log("edit");
+	},
+	remove: async (product_feedstock_id) => {
+		console.log('remove');
+	},
+	form: {
+		display: async (product_id) => {
+			if(document.getElementById("product-feedstock-add-box").style.display == "none"){
+				document.getElementById("product-feedstock-category-create-form").elements.namedItem("product_id").value = product_id;
+				document.getElementById("product-feedstock-add-form").elements.namedItem("product_id").value = product_id;
+
+				const product_feedstock_categories = await Product.feedstock.category.list(product_id);
+
+				let html = "";
+				for(i in product_feedstock_categories){
+					html += "<option value='"+product_feedstock_categories[i].id+"'>"+product_feedstock_categories[i].name+"</option>";
+				};
+
+				document.getElementById("product-feedstock-add-form").elements.namedItem("category_id").innerHTML = html;
+			};
+		}
 	}
 };
+
+document.getElementById("product-feedstock-category-create-form").addEventListener("submit", async (event) => {
+	event.preventDefault();
+	document.getElementById('ajax-loader').style.visibility = 'visible';
+
+	let category = {
+		id: document.getElementById("product-feedstock-category-create-form").elements.namedItem("id").value,
+		product_id: document.getElementById("product-feedstock-category-create-form").elements.namedItem("product_id").value,
+		category_name: document.getElementById("product-feedstock-category-create-form").elements.namedItem("category_name").value
+	};
+
+	Product.feedstock.category.save(category);
+	
+	document.getElementById("product-feedstock-category-create-form").elements.namedItem("category_name").value = "";
+	document.getElementById('ajax-loader').style.visibility = 'hidden';
+});

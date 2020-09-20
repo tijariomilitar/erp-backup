@@ -17,7 +17,7 @@ Product.view.image = {
 				html += "<img class='image-box' src='"+images[i].url+"'>";
 				html += "<div class='box-1'>";
 				html += "<br>";
-				html += "<button class='btn-generic-big' onclick='Product.image.controller.remove("+images[i].id+", "+images[i].product_id+")'>Excluir</button>";
+				html += "<button class='btn-generic-big' onclick='Product.controller.image.remove("+images[i].id+", "+images[i].product_id+")'>Excluir</button>";
 				html += "</div>";
 			};
 

@@ -266,7 +266,7 @@ const productController = {
 			try {
 				let product = { feedstocks: [] };
 				let feedstocks = [];
-				product.feedstocks = await Product.feedstock.list(req.params.id);
+				product.feedstocks = await Product.feedstock.list(req.params.product_id);
 
 				for(i in product.feedstocks){
 					let feedstock = await Feedstock.findById(product.feedstocks[i].feedstock_id);
@@ -284,7 +284,8 @@ const productController = {
 					};
 				};
 
-				res.send({ product });
+
+				res.send({ feedstocks: product.feedstocks });
 			} catch (err) {
 				console.log(err);
 				res.send({ msg: "Ocorreu um erro ao listar as matérias-primas do produto, favor contatar o suporte." });
@@ -310,10 +311,12 @@ const productController = {
 				};
 
 				const category = {
-					id: req.body.category_id,
+					id: req.body.id,
 					product_id: req.body.product_id,
 					name: req.body.category_name
 				};
+
+				console.log(category);
 
 				if(!category.product_id){
 					return res.send({ msg: "Produto inválido!" });

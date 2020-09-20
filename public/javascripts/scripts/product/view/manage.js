@@ -1,7 +1,7 @@
 Product.view.manage = {
 	filter: (products, pagination) => {
 		if(products.length){
-			var html = "<tr>";
+			let html = "<tr>";
 			html += "<td>Cód</td>";
 			html += "<td>Nome</td>";
 			html += "<td>Tamanho</td>";
@@ -9,7 +9,6 @@ Product.view.manage = {
 			html += "<td></td>";
 			html += "<td></td>";
 			html += "</tr>";
-
 			for (let i = pagination.page * pagination.pageSize; i < products.length && i < (pagination.page + 1) * pagination.pageSize; i++){
 				html += "<tr>";
 				html += "<td><a class='tbl-show-link nowrap' onclick='Product.controller.manage.show("+products[i].id+")'>"+products[i].code+"</a></td>";
@@ -28,10 +27,10 @@ Product.view.manage = {
 		};
 	},
 	menu: (product) => {
-		var html = "";
-		html += "<h4 style='opacity:0.6'>MENU PRINCIPAL</h4>";
+		let html = "";
+		html += "<h4 class='underline'>MENU PRINCIPAL</h4>";
 		html += "<button class='btn-generic-medium' onclick='Product.controller.image.add("+product.id+")'>Adicionar Imagem</button>";
-		html += "<button class='btn-generic-medium' onclick='Product.feedstock.form.display("+product.id+", `product-feedstock-add-form`)'>Adicionar Matéria-Prima</button>";
+		html += "<button class='btn-generic-medium' onclick='Product.controller.feedstock.form.display("+product.id+", `product-feedstock-add-form`);lib.displayDiv(`product-feedstock-add-box`);'>Adicionar Matéria-Prima</button>";
 		html += "<button class='btn-generic-medium' onclick='Product.controller.feedstock.list("+product.id+");lib.displayDiv(`product-feedstock-box`);'>Listar Matéssrias-Prima</button>";
 
 		document.getElementById("product-manage-menu-box").innerHTML = html;
