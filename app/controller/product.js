@@ -236,13 +236,38 @@ const productController = {
 				id: req.body.id,
 				product_id: req.body.product_id,
 				feedstock_id: req.body.feedstock_id,
-				uom: req.body.feedstock_uom,
-				amount: parseInt(req.body.feedstock_amount),
-				measure: parseFloat(req.body.feedstock_measure)
+				uom: req.body.uom,
+				amount: parseInt(req.body.amount),
+				measure: parseFloat(req.body.measure),
+				category_id: req.body.category_id
 			};
 
-			if(product_feedstock.uom == 'un') {
-				product_feedstock.measure = 1;
+			if(!product_feedstock.product_id){
+				return res.send({ msg: "Não é possível cadastrar sem informar o produto!" })
+			};
+
+			if(!product_feedstock.feedstock_id){
+				return res.send({ msg: "Selecione a Matéria-Prima" });
+			};
+
+			if(!product_feedstock.uom){
+				return res.send({ msg: "Selecione a Unidade de medida" });
+			};
+
+			if(product_feedstock.uom == "cm"){
+				if(!product_feedstock.amount){
+					return res.send({ msg: "Informe a quantidade" });
+				};
+				if(!product_feedstock.measure){
+					return res.send({ msg: "Informe a medida" });
+				};
+			};
+
+			if(product_feedstock.uom == "un"){
+				product_feedstock.measure = 0;
+				if(!product_feedstock.amount){
+					return res.send({ msg: "Informe a quantidade" });
+				};
 			};
 
 			try {
@@ -256,6 +281,19 @@ const productController = {
 			} catch (err) {
 				console.log(err);
 				res.send({ msg: "Ocorreu um erro ao cadastrar a matéria-prima, favor contatar o suporte." });
+			};
+		},
+		findById: async (req, res) => {
+			if(!await userController.verifyAccess(req, res, ['adm','man','COR-GER'])){
+				return res.send({ unauthorized: "Você não tem permissão para realizar esta ação!" });
+			};
+
+			try {
+				let product_feedstock = await Product.feedstock.findById(req.params.id);
+				res.send({ product_feedstock });
+			} catch (err) {
+				console.log(err);
+				res.send({ msg: "Ocorreu um erro ao encontrar a matéria-prima do produto, favor contatar o suporte." });
 			};
 		},
 		list: async (req, res) => {
@@ -332,7 +370,7 @@ const productController = {
 					} else {
 						await Product.feedstock.category.update(category);
 					};
-					res.send({ done: 'Categoria cadastrada com sucesso!' });
+					res.send({ done: "Categoria cadastrada com sucesso!" });
 				} catch (err) {
 					console.log(err);
 					res.send({ msg: "Ocorreu um erro ao cadastrar a categoria da matéria-prima." });

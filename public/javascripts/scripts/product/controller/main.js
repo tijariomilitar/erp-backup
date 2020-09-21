@@ -41,7 +41,7 @@ Product.controller.show = async (product_id) => {
 
 	Product.view.info(product, "product-info-table", "product-info-title");
 	
-	const pagination = { pageSize: 1, page: 0};
+	const pagination = { pageSize: 1, page: 0 };
 	$(() => { lib.carousel.execute("product-image-box", Product.view.image.show, product.images, pagination); });
 	
 	document.getElementById('ajax-loader').style.visibility = 'hidden';
@@ -97,20 +97,22 @@ Product.controller.manage = {
 	show: async (product_id) => {
 		document.getElementById('ajax-loader').style.visibility = 'visible';
 		
+		document.getElementById('product-manage-image-box').style.display = 'block';
+		document.getElementById("product-manage-info-box").style.display = "block";
+		document.getElementById("product-manage-menu-box").style.display = "block";
+		
+		document.getElementById("product-feedstock-box").style.display = "none";
+		document.getElementById("product-feedstock-add-box").style.display = "none";
+
 		let product = await Product.findById(product_id);
 		if(!product){ return false };
 
-		document.getElementById("product-feedstock-box").style.display = "none";
-		document.getElementById("product-manage-show-box").style.display = "block";
-
-		document.getElementById("product-feedstock-category-create-form").elements.namedItem("id").value = product_id;
-
 		Product.view.manage.menu(product);
-		Product.view.info(product, "product-manage-info-table", "product-manage-info-table");
+		Product.view.manage.info(product, "product-manage-info-title", "product-manage-info-table");
 		
-		const pagination = { pageSize: 1, page: 0};
-		$(() => { lib.carousel.execute("product-manage-image-box", Product.view.image.manage.show, product.images, pagination); });
-		
+		const pagination = { pageSize: 1, page: 0 };
+		$(() => { lib.carousel.execute("product-manage-image-div", Product.view.image.manage.show, product.images, pagination); });
+
 		document.getElementById('ajax-loader').style.visibility = 'hidden';
 	}
 };

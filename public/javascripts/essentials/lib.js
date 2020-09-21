@@ -81,12 +81,19 @@ const lib = {
 	},
 
 // html/css lib
-	displayDiv: (div) => {
+	displayDiv: (div, button, openText, closeText) => {
 		let selectedDiv = document.getElementById(div);
+		
 		if(selectedDiv.style.display == "none"){
-			selectedDiv.style.display = "block";	
+			if(button && openText && closeText){
+				button.innerHTML = closeText;
+			};
+			selectedDiv.style.display = "block";
 		} else if(selectedDiv.style.display == "block"){
-			selectedDiv.style.display = "none";	
+			if(button && openText && closeText){
+				button.innerHTML = openText;
+			};
+			selectedDiv.style.display = "none";
 		};
 	},
 	displayMenuText: (button, openText, closeText) => {
@@ -146,30 +153,35 @@ const lib = {
 		navigation: (box, response, pagination) => {
 			if(!response.length){
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = true;
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = "0 de 0";
+				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = " 0 ";
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = true;
-			} else if(response.length / pagination.pageSize <= 1){
+			};
+
+			if(response.length && response.length <= pagination.pageSize){
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = true;
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = "1 de 1";
 				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = true;
 			};
 
-			if(response.length <= pagination.pageSize || pagination.page == 0){
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = true;
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = ""+ (pagination.page + 1) + " de " + Math.ceil(response.length / pagination.pageSize);
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = false;
-			};
+			if(response.length > pagination.pageSize){
+				if(pagination.page <= 0){
+					pagination.page = 0;
+					document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = true;
+					document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = ""+ (pagination.page + 1) + " de " + Math.ceil(response.length / pagination.pageSize);
+					document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = false;
+				};
 
-			if(pagination.page > 0 && pagination.page < (response.length / pagination.pageSize) - 1){
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = false;
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = ""+ (pagination.page + 1) + " de " + Math.ceil(response.length / pagination.pageSize);
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = false;
-			};
+				if(pagination.page > 0 && pagination.page < (response.length / pagination.pageSize) - 1){
+					document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = false;
+					document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = ""+ (pagination.page + 1) + " de " + Math.ceil(response.length / pagination.pageSize);
+					document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = false;
+				};
 
-			if(response.length <= pagination.pageSize || pagination.page >= response.length / pagination.pageSize - 1){
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = false;
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = ""+ (pagination.page + 1) + " de " + Math.ceil(response.length / pagination.pageSize);
-				document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = true;
+				if(pagination.page >= (response.length / pagination.pageSize) - 1){
+					document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-previous").disabled = false;
+					document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-page").innerHTML = ""+ (pagination.page + 1) + " de " + Math.ceil(response.length / pagination.pageSize);
+					document.getElementById(box).children.namedItem("carousel-navigation").children.namedItem("carousel-next").disabled = true;
+				};
 			};
 		}
 	}

@@ -17,6 +17,7 @@ router.post('/image/add', productController.image.add);
 router.delete('/image/remove', productController.image.remove);
 
 router.post('/feedstock/add', productController.feedstock.add);
+router.get('/feedstock/id/:id', productController.feedstock.findById);
 router.delete('/feedstock/remove', productController.feedstock.remove);
 router.get('/feedstock/list/product_id/:product_id', productController.feedstock.list);
 router.post('/feedstock/category/save', productController.feedstock.category.save);

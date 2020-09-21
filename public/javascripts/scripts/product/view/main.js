@@ -1,5 +1,5 @@
 Product.view = {
-	info: (product, form, title) => {
+	info: (product, title, table) => {
 		let html = "";
 		html += "#"+ product.code +" - "+ product.code;
 
@@ -17,7 +17,7 @@ Product.view = {
 		html += "<td>"+product.color+"</td>";
 		html += "</tr>";
 
-		document.getElementById(form).innerHTML = html;
+		document.getElementById(table).innerHTML = html;
 	},
 	filter: (products, pagination) => {
 		if(products.length){

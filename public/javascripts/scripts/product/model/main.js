@@ -1,4 +1,4 @@
-Product.save = async (product, form) => {
+Product.save = async (product) => {
 	let response = await fetch("/product/save", {
 		method: "POST",
 		headers: {'Content-Type': 'application/json'},
@@ -6,7 +6,7 @@ Product.save = async (product, form) => {
 	});
 	response = await response.json();
 
-	if(API.verifyResponse(response, form)){ return false };
+	if(API.verifyResponse(response)){ return false };
 	alert(response.done);
 
 	return response.product[0];

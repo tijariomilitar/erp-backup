@@ -58,7 +58,7 @@ $(function(){
 							renderAdminFeedstocks(response.feedstocks, pageSize, page, location);
 						} else if (location==="feedstockCatalog"){
 							renderFeedstocks(response.feedstocks, pageSize, page, location);
-						} else if (location==="productAddFeedstock"){
+						} else if (location==="product-feedstock-add"){
 							fillFeedstockSelect(response.feedstocks, document.getElementById("product-feedstock-add-form").elements.namedItem('feedstock_id'));
 						} else if (location==="feedstockSupplierAddFeedstock"){
 							fillFeedstockSelect(response.feedstocks, document.getElementById("feedstock-supplier-feedstock-add-form").elements.namedItem('feedstock_id'));

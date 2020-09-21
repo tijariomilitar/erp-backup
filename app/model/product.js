@@ -79,16 +79,21 @@ Product.image = {
 
 Product.feedstock = {
 	add: async (product_feedstock) => {
-		let query = "INSERT INTO cms_wt_erp.product_feedstock (product_id, feedstock_id, uom, amount, measure) VALUES ('"
+		let query = "INSERT INTO cms_wt_erp.product_feedstock (product_id, feedstock_id, uom, amount, measure, category_id) VALUES ('"
 			+product_feedstock.product_id+"', '"
 			+product_feedstock.feedstock_id+"', '"
 			+product_feedstock.uom+"', '"
 			+product_feedstock.amount+"', '"
-			+product_feedstock.measure+"');";
+			+product_feedstock.measure+"', '"
+			+product_feedstock.category_id+"');";
 		return db(query);
 	},
 	update: async (product_feedstock) => {
-		let query = "UPDATE cms_wt_erp.product_feedstock SET uom='"+product_feedstock.uom+"', amount='"+product_feedstock.amount+"', measure='"+product_feedstock.measure+"' WHERE id='"+product_feedstock.id+"';";
+		let query = "UPDATE cms_wt_erp.product_feedstock SET amount='"+product_feedstock.amount+"', measure='"+product_feedstock.measure+"', category_id='"+product_feedstock.category_id+"' WHERE id='"+product_feedstock.id+"';";
+		return db(query);
+	},
+	findById: async (id) => {
+		let query = "SELECT * FROM cms_wt_erp.product_feedstock WHERE id='"+id+"';";
 		return db(query);
 	},
 	list: async (id) => {

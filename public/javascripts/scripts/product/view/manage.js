@@ -1,4 +1,26 @@
 Product.view.manage = {
+	info: (product, title, table) => {
+		let html = "";
+		html += product.name;
+
+		document.getElementById(title).innerHTML = html;
+
+		html = "<tr class='bold'>";
+		html += "<td>ID</td>";
+		html += "<td>Cód</td>";
+		html += "<td>Tamanho</td>";
+		html += "<td>Cor</td>";
+		html += "</tr>";
+
+		html += "<tr>";
+		html += "<td class='nowrap'>"+product.id+"</td>";
+		html += "<td class='nowrap'>"+product.code+"</td>";
+		html += "<td>"+product.size+"</td>";
+		html += "<td>"+product.color+"</td>";
+		html += "</tr>";
+
+		document.getElementById(table).innerHTML = html;
+	},
 	filter: (products, pagination) => {
 		if(products.length){
 			let html = "<tr>";
@@ -30,9 +52,9 @@ Product.view.manage = {
 		let html = "";
 		html += "<h4 class='underline'>MENU PRINCIPAL</h4>";
 		html += "<button class='btn-generic-medium' onclick='Product.controller.image.add("+product.id+")'>Adicionar Imagem</button>";
-		html += "<button class='btn-generic-medium' onclick='Product.controller.feedstock.form.display("+product.id+", `product-feedstock-add-form`);lib.displayDiv(`product-feedstock-add-box`);'>Adicionar Matéria-Prima</button>";
-		html += "<button class='btn-generic-medium' onclick='Product.controller.feedstock.list("+product.id+");lib.displayDiv(`product-feedstock-box`);'>Listar Matéssrias-Prima</button>";
+		html += "<button class='btn-generic-medium' onclick='Product.controller.feedstock.form.display("+product.id+");lib.displayDiv(`product-feedstock-add-box`, this, `Adicionar Matéria-Prima`, `Esconder Formulário`);'>Adicionar Matéria-Prima</button>";
+		html += "<button class='btn-generic-medium' onclick='Product.controller.feedstock.list("+product.id+");lib.displayDiv(`product-feedstock-box`, this, `Listar Matérias-Primas`, `Esconder Lista`);'>Listar Matérias-Primas</button>";
 
-		document.getElementById("product-manage-menu-box").innerHTML = html;
+		document.getElementById("product-manage-menu-div").innerHTML = html;
 	}
 };

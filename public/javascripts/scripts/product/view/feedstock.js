@@ -28,8 +28,8 @@ Product.view.feedstock = {
 					} else {
 						html += "<td> - </td>";
 					};
-					html += "<td><img class='img-tbl-btn' src='/images/icon/edit.png' onclick='Product.controller.feedstock.edit("+feedstocks[i][j].id+")'></td>";
-					html += "<td><img class='img-tbl-btn' src='/images/icon/trash.png' onclick='Product.controller.feedstock.remove("+feedstocks[i][j].id+")'></td>";
+					html += "<td><img class='img-tbl-btn' src='/images/icon/edit.png' onclick='Product.controller.feedstock.edit("+feedstocks[i][j].id+", "+feedstocks[i][j].code+", `"+feedstocks[i][j].name+"`, `"+feedstocks[i][j].color+"`)'></td>";
+					html += "<td><img class='img-tbl-btn' src='/images/icon/trash.png' onclick='Product.controller.feedstock.remove("+feedstocks[i][j].id+", "+feedstocks[i][j].product_id+")'></td>";
 					html += "</tr>";
 				};
 			};
